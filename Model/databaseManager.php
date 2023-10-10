@@ -28,7 +28,7 @@ function login($conexion, $id, $password, $rol) {
     $stmt->close();
 }
 
-$db = new Database();
+//$db = new Database();
 /*echo json_encode(login($db->getConnection(), 0, "administrador"));
 echo json_encode(insertarDatos($db->getConnection(), 1, "pswd001", 1, "nombre1", "usuario1@email.com", 0, 0, 0, 0));*/
 
