@@ -1,15 +1,13 @@
 <?php
 // routes.php
 
-//Constante para iniciar en el login
-define('LOGIN', '/api/login');
-
 //Administradores
 
 //POST
 define('ALTAUSUARIO', '/api/administrador/usuarios/alta/');
 
 //GET
+define('LOGIN', '/api/login');
 define('LISTARUSUARIOS', '/api/administrador/usuarios/listar');
 define('LISTARUSUARIOSID', '/api/administrador/usuarios/listar/?');
 

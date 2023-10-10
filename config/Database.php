@@ -1,5 +1,5 @@
 <?php
-require '../config/constantes.php';
+require 'config/constantes.php';
 class Database{
 
     private $conexion;
