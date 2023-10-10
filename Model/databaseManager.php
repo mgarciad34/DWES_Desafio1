@@ -11,14 +11,18 @@ function login($conexion, $id, $password) {
             $resultados = $stmt->get_result();
             if ($resultados->num_rows === 1) {
                 $array = mysqli_fetch_assoc($resultados);
+                $stmt->close();
                 return true;
             } else {
+                $stmt->close();
                 return false;
             }
         } else {
+            $stmt->close();
             return false;
         }
     } else {
+        $stmt->close();
         return false;
     }
     $stmt->close();
@@ -37,8 +41,10 @@ function insertarDatos($conexion, $id, $password, $rol, $nombre, $email, $alta, 
     }
     $stmt->bind_param("isssssiii", $id, $password, $rol, $nombre, $email, $alta, $activo, $partidasJugadas, $partidasGanadas);
     if ($stmt->execute()) {
+        $stmt->close();
         return array("success" => true, "message" => "Datos insertados correctamente.");
     } else {
+        $stmt->close();
         return array("success" => false, "message" => "Error al insertar datos: " . $stmt->error);
     }
     $stmt->close();
@@ -52,11 +58,12 @@ function generarAltaBaja($conexion, $id, $nuevoValorAlta) {
     }
     $stmt->bind_param("ii", $nuevoValorAlta, $id);
     if ($stmt->execute()) {
+        $stmt->close();
         return array("success" => true, "message" => "Alta modificada correctamente.");
     } else {
+        $stmt->close();
         return array("success" => false, "message" => "Error al modificar el valor de alta: " . $stmt->error);
     }
-    $stmt->close();
 }
 
 
@@ -68,11 +75,12 @@ function generarActivoDesactivo($conexion, $id, $nuevoValorActivo) {
     }
     $stmt->bind_param("ii", $nuevoValorActivo, $id);
     if ($stmt->execute()) {
+        $stmt->close();
         return array("success" => true, "message" => "Activo modificada correctamente.");
     } else {
+        $stmt->close();
         return array("success" => false, "message" => "Error al modificar el valor de alta: " . $stmt->error);
     }
-    $stmt->close();
 }
 
 function leerTodosLosDatos($conexion) {
@@ -85,17 +93,20 @@ function leerTodosLosDatos($conexion) {
                 while ($fila = mysqli_fetch_assoc($resultados)) {
                     $datos[] = $fila;
                 }
+                $stmt->close();
                 return $datos;
             } else {
+                $stmt->close();
                 return array();
             }
         } else {
+            $stmt->close();
             return false;
         }
     } else {
+        $stmt->close();
         return false;
     }
-    $stmt->close();
 }
 
 function leerDatosPorID($conexion, $id) {
@@ -104,19 +115,22 @@ function leerDatosPorID($conexion, $id) {
         $stmt->bind_param("s", $id);
         if ($stmt->execute()) {
             $resultados = $stmt->get_result();
-        if ($resultados->num_rows === 1) {
+            if ($resultados->num_rows === 1) {
                 $fila = mysqli_fetch_assoc($resultados);
+                $stmt->close();
                 return $fila;
             } else {
+                $stmt->close();
                 return null;
             }
         } else {
+            $stmt->close();
             return false;
         }
     } else {
+        $stmt->close();
         return false;
     }
-    $stmt->close();
 }
 
 function eliminarUsuarioPorID($conexion, $id) {
@@ -124,14 +138,16 @@ function eliminarUsuarioPorID($conexion, $id) {
     if ($stmt = $conexion->prepare($consulta)) {
         $stmt->bind_param("s", $id);
     if ($stmt->execute()) {
+            $stmt->close();
             return true;
         } else {
+            $stmt->close();
             return false;
         }
     } else {
+        $stmt->close();
         return false;
     }
-    $stmt->close();
 }
 
 function cambiarContraseñaPorID($conexion, $id, $nuevaContraseña) {
@@ -139,14 +155,16 @@ function cambiarContraseñaPorID($conexion, $id, $nuevaContraseña) {
     if ($stmt = $conexion->prepare($consulta)) {
         $stmt->bind_param("ss", $nuevaContraseña, $id);
         if ($stmt->execute()) {
+            $stmt->close();
             return true;
         } else {
             return false;
         }
     } else {
+        $stmt->close();
         return false;
     }
-    $stmt->close();
+    
 }
 
 ?>
