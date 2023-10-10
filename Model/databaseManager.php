@@ -1,8 +1,8 @@
 <?php
 require '../config/Database.php';
 
-function login($conexion, $id, $password) {
-    $consulta = "SELECT * FROM personas WHERE ID = ? AND PASSWORD = ? AND ROL = 0";
+function login($conexion, $id, $password, $rol) {
+    $consulta = "SELECT * FROM personas WHERE ID = ? AND PASSWORD = ? AND ROL = "+ $rol;
     // Preparar la consulta con marcadores de posición
     if ($stmt = $conexion->prepare($consulta)) {
         // Vincular los parámetros
@@ -50,7 +50,7 @@ function insertarDatos($conexion, $id, $password, $rol, $nombre, $email, $alta, 
     $stmt->close();
 }
 
-function generarAltaBaja($conexion, $id, $nuevoValorAlta) {
+function generarAltaBaja($conexion, $id, $nuevoValorAlta, $funcion) {
     $sql = "UPDATE personas SET alta = ? WHERE id = ?";
     $stmt = $conexion->prepare($sql);
     if (!$stmt) {
@@ -59,7 +59,7 @@ function generarAltaBaja($conexion, $id, $nuevoValorAlta) {
     $stmt->bind_param("ii", $nuevoValorAlta, $id);
     if ($stmt->execute()) {
         $stmt->close();
-        return array("success" => true, "message" => "Alta modificada correctamente.");
+        return array("success" => true, "message" => $funcion + " modificada correctamente.");
     } else {
         $stmt->close();
         return array("success" => false, "message" => "Error al modificar el valor de alta: " . $stmt->error);
@@ -150,10 +150,10 @@ function eliminarUsuarioPorID($conexion, $id) {
     }
 }
 
-function cambiarContraseñaPorID($conexion, $id, $nuevaContraseña) {
+function cambiarContrasenaPorID($conexion, $id, $nuevaContrasena) {
     $consulta = "UPDATE personas SET PASSWORD = ? WHERE ID = ?";
     if ($stmt = $conexion->prepare($consulta)) {
-        $stmt->bind_param("ss", $nuevaContraseña, $id);
+        $stmt->bind_param("ss", $nuevaContrasena, $id);
         if ($stmt->execute()) {
             $stmt->close();
             return true;
