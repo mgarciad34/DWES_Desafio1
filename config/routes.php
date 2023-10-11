@@ -2,7 +2,6 @@
 // routes.php
 
 //Administradores
-
 //POST
 define('ALTAUSUARIO', '/api/administrador/usuarios/alta/');
 
@@ -10,7 +9,6 @@ define('ALTAUSUARIO', '/api/administrador/usuarios/alta/');
 define('LOGIN', '/api/login');
 define('LISTARUSUARIOS', '/api/administrador/usuarios/listar');
 define('LISTARUSUARIOSID', '/api/administrador/usuarios/listar/?');
-
 //PUT
 define('BAJAUSUARIO', '/api/administrador/usuarios/baja/?');
 define('MODIFICARUSUARIOID', '/api/administrador/usuarios/modificar/?');

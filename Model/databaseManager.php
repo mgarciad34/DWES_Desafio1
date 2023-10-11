@@ -1,18 +1,24 @@
 <?php
 require 'config/Database.php';
 
-function login($conexion, $id, $password, $rol) {
-    $consulta = "SELECT * FROM personas WHERE ID = ? AND PASSWORD = ? AND ROL = "+ $rol;
+function login($conexion, $email, $pass) {
+    $consulta = "SELECT ROL FROM personas WHERE EMAIL = ? AND PASSWORD = ?";;
     // Preparar la consulta con marcadores de posición
     if ($stmt = $conexion->prepare($consulta)) {
         // Vincular los parámetros
-        $stmt->bind_param("ss", $id, $password);
+        $stmt->bind_param("ss", $email, $pass);
         if ($stmt->execute()) {
             $resultados = $stmt->get_result();
             if ($resultados->num_rows === 1) {
                 $array = mysqli_fetch_assoc($resultados);
                 $stmt->close();
-                return true;
+                if($array == null){
+                    return null;
+                }else{
+                    return $array;
+                }
+
+                
             } else {
                 $stmt->close();
                 return false;

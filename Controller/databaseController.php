@@ -2,45 +2,47 @@
 
 require 'Model/databaseManager.php';
 
-
-function iniciarSesion($conexion, Personas $personas){
-    return login($conexion, $personas->getId(), $personas->getPassword(), $personas->getRol());
+class databaseController{
+    
+public static function iniciarSesion($conexion, $email, $pass){
+    return login($conexion, $email, $pass);
 }
 
-function anadirUsuario($conexion, Personas $personas){
+public static function anadirUsuario($conexion, Personas $personas){
     return insertarDatos($conexion, $personas->getId(), $personas->getPassword(), $personas->getRol(), $personas->getNombre(), $personas->getEmail(), $personas->getAlta(), $personas->getActivo(), 0, 0);
 }
 
-function altaUsuario($conexion, Personas $personas){
+public static function altaUsuario($conexion, Personas $personas){
     return generarAltaBaja($conexion, $personas->getId(), $personas->getAlta(), "Alta");
 }
 
-function bajaUsuario($conexion, Personas $personas){
+public static function bajaUsuario($conexion, Personas $personas){
     return generarAltaBaja($conexion, $personas->getId(), $personas->getAlta(), "Baja");
 }
 
-function activoUsuario($conexion, Personas $personas){
+public static function activoUsuario($conexion, Personas $personas){
     return generarActivoDesactivo($conexion, $personas->getId(), $personas->getActivo(),);
 }
 
-function desactivoUsuario($conexion, Personas $personas){
+public static function desactivoUsuario($conexion, Personas $personas){
     return generarActivoDesactivo($conexion, $personas->getId(), $personas->getActivo(),);
 }
 
-function leerDatos($conexion){
+public static function leerDatos($conexion){
     return leerTodosLosDatos($conexion);
 }
 
-function leerDatosId($conexion, Personas $personas){
+public static function leerDatosId($conexion, Personas $personas){
     return leerDatosPorID($conexion, $personas->getId());
 }
 
-function eliminarUsuarioId($conexion, Personas $personas){
+public static function eliminarUsuarioId($conexion, Personas $personas){
     return eliminarUsuarioPorID($conexion, $personas->getId());
 }
 
-function cambiarContrasena($conexion, Personas $personas){
+public static function cambiarContrasena($conexion, Personas $personas){
     return cambiarContrasenaPorID($conexion, $personas->getId(), $personas->getPassword());
+}
 }
 
 ?>

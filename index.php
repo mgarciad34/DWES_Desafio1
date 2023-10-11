@@ -8,27 +8,32 @@ require 'Controller/databaseController.php';
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 $paths = $_SERVER['REQUEST_URI'];
+$argus = explode('/', $paths);
+unset($argus[0]);
+
 //Conexion con nuestra BBDD
-$db = new Database();
 $rol = null;
+$db = new Database();
+
 
 switch ($requestMethod) {
     case 'GET':
-        print_r($paths);
-       break;
+       
+      break;
 
     case 'POST':
-       # code...
-       break;
+      if(str_contains(LOGIN, $paths)){
+        $data = json_decode('{"email":"administrador@buscaminas.com","password":"admin"}');
+        $rol = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password);    
+        echo $rol;
+      }
+      break;
     case 'PUT':
-       # code...
-       break;
+      break;
 
     case 'DELETE':
-       # code...
-       break;          
+      break;          
     default:
-        # code...
-        break;
+      break;
 }
 ?>
