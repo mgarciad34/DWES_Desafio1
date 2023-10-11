@@ -22,8 +22,15 @@ switch ($requestMethod) {
       break;
 
     case 'POST':
+      /*
+      {
+        "email": "administrador@buscaminas.com",
+        "password": "admin"
+      }
+      */
       if(str_contains(LOGIN, $paths)){
-        $data = json_decode('{"email":"administrador@buscaminas.com","password":"admin"}');
+        $requestBody = file_get_contents("php://input");
+        $data = json_decode($requestBody);
         $rol = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password);    
         echo $rol;
       }
