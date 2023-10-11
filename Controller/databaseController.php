@@ -1,7 +1,6 @@
 <?php
 
 require 'Model/databaseManager.php';
-require('Model/Personas.php');
 
 
 function iniciarSesion($conexion, Personas $personas){
