@@ -40,8 +40,8 @@ public static function eliminarUsuarioId($conexion, Personas $personas){
     return eliminarUsuarioPorID($conexion, $personas->getId());
 }
 
-public static function cambiarContrasena($conexion, Personas $personas){
-    return cambiarContrasenaPorID($conexion, $personas->getId(), $personas->getPassword());
+public static function cambiarContrasena($conexion, $id, $nuevaContrasena){
+    return cambiarContrasenaPorID($conexion, $id, $nuevaContrasena);
 }
 }
 

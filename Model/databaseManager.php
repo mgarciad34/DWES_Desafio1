@@ -168,7 +168,7 @@ function cambiarContrasenaPorID($conexion, $id, $nuevaContrasena) {
         $stmt->bind_param("ss", $nuevaContrasena, $id);
         if ($stmt->execute()) {
             $stmt->close();
-            return true;
+            return "Contraseña Cambiada";
         } else {
             return false;
         }

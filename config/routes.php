@@ -12,10 +12,10 @@ define('LISTARUSUARIOSID', '/api/administrador/usuarios/listar/');
 //PUT
 define('ALTAUSUARIO', '/api/administrador/usuarios/alta/');
 define('BAJAUSUARIO', '/api/administrador/usuarios/baja/');
-define('MODIFICARUSUARIOID', '/api/administrador/usuarios/modificar/?');
 define('ACTIVARUSUARIO', '/api/administrador/usuarios/activo/');
 define('DESACTIVARUSUARIO', '/api/administrador/usuarios/desactivo/');
-define('CAMBIARCONTRASENA', '/api/administrador/usuarios/cambiarcontrasena/?');
+define('CAMBIARCONTRASENA', '/api/administrador/usuarios/cambiarcontrasena/');
+define('MODIFICARUSUARIOID', '/api/administrador/usuarios/modificar/?');
 
 //DELETE
 define('ELIMINARUSUARIOID', '/api/administrador/usuarios/eliminar/?');
