@@ -41,8 +41,6 @@ switch ($requestMethod) {
                   header("HTTP/1.1 400 Bad Request");
               }
           }
-
-          
         }
       }else if (obtenerRol() === "1") {
             // Procesa solicitudes para un rol diferente
@@ -164,7 +162,7 @@ switch ($requestMethod) {
   $requestBody = file_get_contents("php://input");
   $data = json_decode($requestBody);
 
-  if ($data !== null && isset($data->id) && isset($data->password)) {
+    if ($data !== null && isset($data->id) && isset($data->password)) {
       $result = databaseController::cambiarContrasena($db->getConnection(), $data->id, $data->password);
 
       if ($result !== null) {
@@ -173,9 +171,9 @@ switch ($requestMethod) {
       } else {
           header("HTTP/1.1 401 Unauthorized");
       }
-} else {
-    header("HTTP/1.1 400 Bad Request");
-}
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
 }
 
 
@@ -210,4 +208,3 @@ function obtenerRol()
         echo json_encode(["message" => "No se ha iniciado sesión"]);
     }
 }
-?>
