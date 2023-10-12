@@ -17,13 +17,7 @@ $db = new Database();
 
 switch ($requestMethod) {
     case 'GET':
-       // En una solicitud GET, puedes acceder al valor de $rol almacenado en la sesión.
-    if (isset($_SESSION['rol'])) {
-      $rol = $_SESSION['rol'];
-      echo json_encode(["rol" => $rol]);
-  } else {
-      echo json_encode(["message" => "No se ha iniciado sesión"]);
-  }
+      echo json_encode(obtenerRol());
       break;
 
     case 'POST':
@@ -59,4 +53,14 @@ switch ($requestMethod) {
     default:
       break;
 }
+
+function obtenerRol(){
+  if (isset($_SESSION['rol'])) {
+    $rol = $_SESSION['rol'];
+    return $rol[7];
+  } else {
+      echo json_encode(["message" => "No se ha iniciado sesión"]);
+  }
+}
+
 ?>
