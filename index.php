@@ -27,19 +27,24 @@ switch ($requestMethod) {
             } else {
               header("HTTP/1.1 400 Bad Request");
             }
-            
-        } elseif (str_contains(LISTARUSUARIOSID, $paths)) {
-            $id = substr($paths, strlen(LISTARUSUARIOSID));
-            $result = databaseController::leerDatosId($db->getConnection(), $id);
-    
-            if ($result !== null) {
-              header("HTTP/1.1 200 OK");
-              echo json_encode($result);
-            } else {
-              header("HTTP/1.1 400 Bad Request");
-            }
+        }else{
+          $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+          
+          if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false) {
+              $id = end($urlArray);
+              $result = databaseController::leerDatosId($db->getConnection(), $id);
+
+              if ($result !== null) {
+                  header("HTTP/1.1 200 OK");
+                  echo json_encode($result);
+              } else {
+                  header("HTTP/1.1 400 Bad Request");
+              }
+          }
+
+          
         }
-      }elseif (obtenerRol() === "1") {
+      }else if (obtenerRol() === "1") {
             // Procesa solicitudes para un rol diferente
       } else {
             // Si no se ha iniciado sesión, mostrar el mensaje
