@@ -133,14 +133,17 @@ function leerDatosPorID($conexion, $id) {
                 return $fila;
             } else {
                 $stmt->close();
+                echo "No se encontró ningún resultado o se encontraron múltiples resultados.";
                 return null;
             }
         } else {
             $stmt->close();
+            echo "Error en la ejecución de la consulta.";
             return false;
         }
     } else {
         $stmt->close();
+        echo "Error en la preparación de la consulta.";
         return false;
     }
 }

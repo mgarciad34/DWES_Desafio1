@@ -8,7 +8,7 @@ define('INSERTARUSUARIO', '/api/administrador/usuarios/insertar/');
 
 //GET
 define('LISTARUSUARIOS', '/api/administrador/usuarios/listar');
-define('LISTARUSUARIOSID', '/api/administrador/usuarios/listar/');
+define('LISTARUSUARIOSID', '/api/administrador/usuarios/listarid/');
 //PUT
 define('ALTAUSUARIO', '/api/administrador/usuarios/alta/');
 define('BAJAUSUARIO', '/api/administrador/usuarios/baja/');

@@ -17,15 +17,31 @@ $db = new Database();
 
 switch ($requestMethod) {
     case 'GET':
-        if (obtenerRol() === "0") {
-            if (str_contains(LISTARUSUARIOS, $paths)) {
-                // Procesa la solicitud para listar usuarios
-            } elseif (str_contains(LISTARUSUARIOSID, $paths)) {
-              
+      if (obtenerRol() === "0") {
+        if (str_contains(LISTARUSUARIOS, $paths)) {
+            $result = databaseController::leerDatos($db->getConnection());
+            
+            if ($result !== null) {
+              header("HTTP/1.1 200 OK");
+              echo json_encode($result);
+            } else {
+              header("HTTP/1.1 400 Bad Request");
             }
-        } elseif (obtenerRol() === "1") {
+            
+        } elseif (str_contains(LISTARUSUARIOSID, $paths)) {
+            $id = substr($paths, strlen(LISTARUSUARIOSID));
+            $result = databaseController::leerDatosId($db->getConnection(), $id);
+    
+            if ($result !== null) {
+              header("HTTP/1.1 200 OK");
+              echo json_encode($result);
+            } else {
+              header("HTTP/1.1 400 Bad Request");
+            }
+        }
+      }elseif (obtenerRol() === "1") {
             // Procesa solicitudes para un rol diferente
-        } else {
+      } else {
             // Si no se ha iniciado sesión, mostrar el mensaje
             echo json_encode(["message" => "No se ha iniciado sesión"]);
         }
