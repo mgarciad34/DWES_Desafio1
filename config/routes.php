@@ -3,10 +3,10 @@
 
 //Administradores
 //POST
+define('LOGIN', '/api/login');
 define('ALTAUSUARIO', '/api/administrador/usuarios/alta/');
 
 //GET
-define('LOGIN', '/api/login');
 define('LISTARUSUARIOS', '/api/administrador/usuarios/listar');
 define('LISTARUSUARIOSID', '/api/administrador/usuarios/listar/?');
 //PUT

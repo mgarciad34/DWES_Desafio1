@@ -17,7 +17,13 @@ $db = new Database();
 
 switch ($requestMethod) {
     case 'GET':
-      echo json_encode(obtenerRol());
+      if (obtenerRol() === "0") {
+        
+      }elseif(obtenerRol() === "1"){
+      
+      }else{
+
+      }
       break;
 
     case 'POST':
@@ -34,21 +40,61 @@ switch ($requestMethod) {
         //isset -> Comprueba si una variable esta definida y no es nula
         if ($data !== null && isset($data->email) && isset($data->password)) {
             $rol = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password);
-            // Después de asignar $rol
-            echo "Rol después de iniciar sesión: " . $rol;
-
-            // Almacenar en la sesión
-            $_SESSION['rol'] = $rol;
+            if ($rol !== null) {
+                header("HTTP/1.1 200 OK");
+              // Almacenar el rol en la sesión
+              $_SESSION['rol'] = $rol;
           } else {
-            // Si los datos JSON no se decodificaron correctamente o faltan campos
-            echo json_encode(["error" => "Datos de inicio de sesión incorrectos"]);
-        }
+            //Si el inicio de sesion es incorrecto mostrara el 401
+            header("HTTP/1.1 401 Unauthorized");
+          }
+      } else {
+          //Si la peticion es incorrecta mostrara el 400
+          header("HTTP/1.1 400 Bad Request");
+      }
+    }else if(str_contains(ALTAUSUARIO, $paths)){
+      if(obtenerRol() === "0"){
+        $requestBody = file_get_contents("php://input");
+        $data = json_decode($requestBody);
+      
+        //isset -> Comprueba si una variable esta definida y no es nula
+        if ($data !== null && isset($data->id) && isset($data->password) && isset($data->rol) && isset($data->nombre) && isset($data->email) && isset($data->alta) && isset($data->activo) && isset($data->partidasJugadas) && isset($data->partidasGanadas)) {
+          $persona = new Personas($data->id, $data->password, $data->rol, $data->nombre, $data->email, $data->alta, $data->activo, $data->partidasJugadas, $data->partidasGanadas);
+          $result = databaseController::anadirUsuario($db->getConnection(), $persona);
+          if ($result !== null) {
+            header("HTTP/1.1 200 OK");
+          } else {
+            header("HTTP/1.1 401 Unauthorized");
+          }
+      } else {
+          header("HTTP/1.1 400 Bad Request");
+      }
+      }else if(obtenerRol() === "1"){
+
+      }else{
+
+      }
     }
       break;
     case 'PUT':
+      if (obtenerRol() === "0") {
+        
+      }elseif(obtenerRol() === "1"){
+      
+      }else{
+
+      }
       break;
 
     case 'DELETE':
+      if (obtenerRol() === "0") {
+        
+      }elseif(obtenerRol() === "1"){
+      
+      }else{
+
+      }
+
       break;          
     default:
       break;
