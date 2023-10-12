@@ -49,7 +49,13 @@ function insertarDatos($conexion, $id, $password, $rol, $nombre, $email, $alta, 
     $stmt->close();
 }
 
-function generarAltaBaja($conexion, $id, $nuevoValorAlta, $funcion) {
+function generarAltaBaja($conexion, $id, $funcion) {
+    $nuevoValorAlta = null;
+    if($funcion === "Alta"){
+        $nuevoValorAlta = 1;
+    }else{
+        $nuevoValorAlta = 0;
+    }
     $sql = "UPDATE personas SET alta = ? WHERE id = ?";
     $stmt = $conexion->prepare($sql);
     if (!$stmt) {
@@ -58,10 +64,10 @@ function generarAltaBaja($conexion, $id, $nuevoValorAlta, $funcion) {
     $stmt->bind_param("ii", $nuevoValorAlta, $id);
     if ($stmt->execute()) {
         $stmt->close();
-        return array("success" => true, "message" => $funcion + " modificada correctamente.");
+        return  $funcion;
     } else {
         $stmt->close();
-        return array("success" => false, "message" => "Error al modificar el valor de alta: " . $stmt->error);
+        return false;
     }
 }
 

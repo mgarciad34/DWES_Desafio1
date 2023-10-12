@@ -4,13 +4,14 @@
 //Administradores
 //POST
 define('LOGIN', '/api/login');
-define('ALTAUSUARIO', '/api/administrador/usuarios/alta/');
+define('INSERTARUSUARIO', '/api/administrador/usuarios/insertar/');
 
 //GET
 define('LISTARUSUARIOS', '/api/administrador/usuarios/listar');
-define('LISTARUSUARIOSID', '/api/administrador/usuarios/listar/?');
+define('LISTARUSUARIOSID', '/api/administrador/usuarios/listar/');
 //PUT
-define('BAJAUSUARIO', '/api/administrador/usuarios/baja/?');
+define('ALTAUSUARIO', '/api/administrador/usuarios/alta/');
+define('BAJAUSUARIO', '/api/administrador/usuarios/baja/');
 define('MODIFICARUSUARIOID', '/api/administrador/usuarios/modificar/?');
 define('ACTIVARUSUARIO', '/api/administrador/usuarios/activo/?');
 define('DESACTIVARUSUARIO', '/api/administrador/usuarios/desactivo/?');

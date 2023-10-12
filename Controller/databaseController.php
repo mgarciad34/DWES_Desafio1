@@ -12,12 +12,12 @@ public static function anadirUsuario($conexion, Personas $personas){
     return insertarDatos($conexion, $personas->getId(), $personas->getPassword(), $personas->getRol(), $personas->getNombre(), $personas->getEmail(), $personas->getAlta(), $personas->getActivo(), 0, 0);
 }
 
-public static function altaUsuario($conexion, Personas $personas){
-    return generarAltaBaja($conexion, $personas->getId(), $personas->getAlta(), "Alta");
+public static function altaUsuario($conexion, $id){
+    return generarAltaBaja($conexion, $id, "Alta");
 }
 
-public static function bajaUsuario($conexion, Personas $personas){
-    return generarAltaBaja($conexion, $personas->getId(), $personas->getAlta(), "Baja");
+public static function bajaUsuario($conexion, $id){
+    return generarAltaBaja($conexion, $id, "Baja");
 }
 
 public static function activoUsuario($conexion, Personas $personas){
@@ -32,8 +32,8 @@ public static function leerDatos($conexion){
     return leerTodosLosDatos($conexion);
 }
 
-public static function leerDatosId($conexion, Personas $personas){
-    return leerDatosPorID($conexion, $personas->getId());
+public static function leerDatosId($conexion, $id){
+    return leerDatosPorID($conexion, $id);
 }
 
 public static function eliminarUsuarioId($conexion, Personas $personas){
