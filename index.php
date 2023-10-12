@@ -107,7 +107,39 @@ switch ($requestMethod) {
           } else {
               header("HTTP/1.1 400 Bad Request");
           }
+      }elseif (str_contains(ACTIVARUSUARIO, $paths)) {
+        $requestBody = file_get_contents("php://input");
+        $data = json_decode($requestBody);
+
+        if ($data !== null && isset($data->id)) {
+            $result = databaseController::activoUsuario($db->getConnection(), $data->id);
+
+            if ($result !== null) {
+                header("HTTP/1.1 200 OK");
+                echo json_encode($result);
+            } else {
+                header("HTTP/1.1 401 Unauthorized");
+            }
+      } else {
+          header("HTTP/1.1 400 Bad Request");
       }
+  }else if (str_contains(DESACTIVARUSUARIO, $paths)) {
+    $requestBody = file_get_contents("php://input");
+    $data = json_decode($requestBody);
+
+    if ($data !== null && isset($data->id)) {
+        $result = databaseController::desactivoUsuario($db->getConnection(), $data->id);
+
+        if ($result !== null) {
+            header("HTTP/1.1 200 OK");
+            echo json_encode($result);
+        } else {
+            header("HTTP/1.1 401 Unauthorized");
+        }
+  } else {
+      header("HTTP/1.1 400 Bad Request");
+  }
+}
 
 
         } elseif (obtenerRol() === "1") {

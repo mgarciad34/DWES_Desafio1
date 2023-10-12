@@ -53,7 +53,7 @@ function generarAltaBaja($conexion, $id, $funcion) {
     $nuevoValorAlta = null;
     if($funcion === "Alta"){
         $nuevoValorAlta = 1;
-    }else{
+    }else if($funcion == "Baja"){
         $nuevoValorAlta = 0;
     }
     $sql = "UPDATE personas SET alta = ? WHERE id = ?";
@@ -72,7 +72,14 @@ function generarAltaBaja($conexion, $id, $funcion) {
 }
 
 
-function generarActivoDesactivo($conexion, $id, $nuevoValorActivo) {
+function generarActivoDesactivo($conexion, $id, $funcion) {
+    $nuevoValorActivo = null;
+    if($funcion === "Activo"){
+        $nuevoValorActivo = 1;
+    }else if($funcion === "Desactivo"){
+        $nuevoValorActivo = 0;
+    }
+    
     $sql = "UPDATE personas SET activo = ? WHERE id = ?";
     $stmt = $conexion->prepare($sql);
     if (!$stmt) {
@@ -81,10 +88,10 @@ function generarActivoDesactivo($conexion, $id, $nuevoValorActivo) {
     $stmt->bind_param("ii", $nuevoValorActivo, $id);
     if ($stmt->execute()) {
         $stmt->close();
-        return array("success" => true, "message" => "Activo modificada correctamente.");
+        return  $funcion;
     } else {
         $stmt->close();
-        return array("success" => false, "message" => "Error al modificar el valor de alta: " . $stmt->error);
+        return  false;
     }
 }
 

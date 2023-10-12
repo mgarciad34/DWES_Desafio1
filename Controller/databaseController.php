@@ -20,12 +20,12 @@ public static function bajaUsuario($conexion, $id){
     return generarAltaBaja($conexion, $id, "Baja");
 }
 
-public static function activoUsuario($conexion, Personas $personas){
-    return generarActivoDesactivo($conexion, $personas->getId(), $personas->getActivo(),);
+public static function activoUsuario($conexion, $id){
+    return generarActivoDesactivo($conexion, $id, "Activo");
 }
 
-public static function desactivoUsuario($conexion, Personas $personas){
-    return generarActivoDesactivo($conexion, $personas->getId(), $personas->getActivo(),);
+public static function desactivoUsuario($conexion, $id){
+    return generarActivoDesactivo($conexion, $id, "Desactivo");
 }
 
 public static function leerDatos($conexion){
