@@ -1,5 +1,4 @@
 <?php
-
 session_start(); // Inicia la sesión
 header("Content-Type: application/json");
 
@@ -45,10 +44,19 @@ switch ($requestMethod) {
             }
         }
       }else if (obtenerRol() === "1") {
-            // Procesa solicitudes para un rol diferente
+        if (str_contains(RANKING, $paths)) {
+            $result = databaseController::rankingGanadas($db->getConnection());
+            
+            if ($result !== null) {
+              header("HTTP/1.1 200 OK");
+              echo json_encode($result);
+            } else {
+              header("HTTP/1.1 400 Bad Request");
+            }
+        }
       } else {
             // Si no se ha iniciado sesión, mostrar el mensaje
-            echo json_encode(["message" => "No se ha iniciado sesión"]);
+            echo json_encode(["message" => obtenerRol()]);
         }
         break;
 
@@ -57,7 +65,7 @@ switch ($requestMethod) {
             $requestBody = file_get_contents("php://input");
             $data = json_decode($requestBody);
 
-            if ($data !== null && isset($data->email) && isset($data->password)) {
+            if ($data !== null and isset($data->email) and isset($data->password)) {
                 $rol = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password);
 
                 if ($rol !== null) {
@@ -74,7 +82,7 @@ switch ($requestMethod) {
                 $requestBody = file_get_contents("php://input");
                 $data = json_decode($requestBody);
 
-                if ($data !== null && isset($data->id) && isset($data->password) && isset($data->rol) && isset($data->nombre) && isset($data->email) && isset($data->alta) && isset($data->activo) && isset($data->partidasJugadas) && isset($data->partidasGanadas)) {
+                if ($data !== null and isset($data->id) and isset($data->password) and isset($data->rol) and isset($data->nombre) and isset($data->email) and isset($data->alta) and isset($data->activo) and isset($data->partidasJugadas) and isset($data->partidasGanadas)) {
                     $persona = new Personas($data->id, $data->password, $data->rol, $data->nombre, $data->email, $data->alta, $data->activo, $data->partidasJugadas, $data->partidasGanadas);
                     $result = databaseController::anadirUsuario($db->getConnection(), $persona);
 
@@ -100,7 +108,7 @@ switch ($requestMethod) {
             $requestBody = file_get_contents("php://input");
             $data = json_decode($requestBody);
 
-            if ($data !== null && isset($data->id)) {
+            if ($data !== null and isset($data->id)) {
                 $result = databaseController::altaUsuario($db->getConnection(), $data->id);
 
                 if ($result !== null) {
@@ -116,7 +124,7 @@ switch ($requestMethod) {
             $requestBody = file_get_contents("php://input");
             $data = json_decode($requestBody);
 
-            if ($data !== null && isset($data->id)) {
+            if ($data !== null and isset($data->id)) {
                 $result = databaseController::bajaUsuario($db->getConnection(), $data->id);
 
                 if ($result !== null) {
@@ -132,7 +140,7 @@ switch ($requestMethod) {
         $requestBody = file_get_contents("php://input");
         $data = json_decode($requestBody);
 
-        if ($data !== null && isset($data->id)) {
+        if ($data !== null and isset($data->id)) {
             $result = databaseController::activoUsuario($db->getConnection(), $data->id);
 
             if ($result !== null) {
@@ -148,7 +156,7 @@ switch ($requestMethod) {
     $requestBody = file_get_contents("php://input");
     $data = json_decode($requestBody);
 
-    if ($data !== null && isset($data->id)) {
+    if ($data !== null and isset($data->id)) {
         $result = databaseController::desactivoUsuario($db->getConnection(), $data->id);
 
         if ($result !== null) {
@@ -164,7 +172,7 @@ switch ($requestMethod) {
   $requestBody = file_get_contents("php://input");
   $data = json_decode($requestBody);
 
-    if ($data !== null && isset($data->id) && isset($data->password)) {
+    if ($data !== null and isset($data->id) and isset($data->password)) {
       $result = databaseController::cambiarContrasena($db->getConnection(), $data->id, $data->password);
 
       if ($result !== null) {
@@ -176,9 +184,23 @@ switch ($requestMethod) {
     } else {
         header("HTTP/1.1 400 Bad Request");
     }
+}else {
+    if(obtenerRol() === "0"){
+        $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+        $requestBody = file_get_contents("php://input");
+        $data = json_decode($requestBody);
+        if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'modificar') !== false) {
+            $id = end($urlArray);
+            $result = databaseController::actualizarDatos($db->getConnection(), $id, $data);
+            if ($result !== null) {
+                header("HTTP/1.1 200 OK");
+                echo json_encode($result);
+            } else {
+                header("HTTP/1.1 400 Bad Request");
+            }
+        }
+    }
 }
-
-
         } elseif (obtenerRol() === "1") {
             // Procesar solicitudes PUT para rol 1
         } else {

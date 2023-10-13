@@ -189,4 +189,52 @@ function cambiarContrasenaPorID($conexion, $id, $nuevaContrasena) {
     }
     
 }
+
+function actualizarDatosPorId($conexion, $id, $data) {
+    
+    foreach ($data as $key => $value) {
+        echo $key;
+    }
+    echo $data->password;
+    
+    
+
+    /*$queryStart = "UPDATE personas SET";
+    $queryEnd = "WHERE id = ". $id;
+
+    $query = $queryStart . $queryInt . $queryEnd;
+        try{
+            mysqli_query($conexion, $query);
+            echo "Datos actualizados";
+        }catch(Exception $e){
+            echo "Fallo al actualizar: (" . $e->getMessage() . ") <br>";
+        }*/
+}
+
+function mostrarRanking($conexion) {
+    $consulta = "SELECT * FROM personas ORDER BY partidasGanadas DESC";
+    if ($stmt = $conexion->prepare($consulta)) {
+        if ($stmt->execute()) {
+            $resultados = $stmt->get_result();
+        if ($resultados->num_rows > 0) {
+                $datos = array();
+                while ($fila = mysqli_fetch_assoc($resultados)) {
+                    $datos[] = $fila;
+                }
+                $stmt->close();
+                return $datos;
+            } else {
+                $stmt->close();
+                return array();
+            }
+        } else {
+            $stmt->close();
+            return false;
+        }
+    } else {
+        $stmt->close();
+        return false;
+    }
+}
+
 ?>

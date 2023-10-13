@@ -43,6 +43,15 @@ public static function eliminarUsuarioId($conexion, $id){
 public static function cambiarContrasena($conexion, $id, $nuevaContrasena){
     return cambiarContrasenaPorID($conexion, $id, $nuevaContrasena);
 }
+
+public static function actualizarDatos($conexion, $id, $data){
+    return actualizarDatosPorId($conexion, $id, $data);
+}
+
+public static function rankingGanadas($conexion){
+    return mostrarRanking($conexion);
+}
+
 }
 
 ?>

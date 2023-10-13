@@ -14,8 +14,9 @@ define('BAJAUSUARIO', '/api/administrador/usuarios/baja/');
 define('ACTIVARUSUARIO', '/api/administrador/usuarios/activo/');
 define('DESACTIVARUSUARIO', '/api/administrador/usuarios/desactivo/');
 define('CAMBIARCONTRASENA', '/api/administrador/usuarios/cambiarcontrasena/');
-define('MODIFICARUSUARIOID', '/api/administrador/usuarios/modificar/?');
+define('MODIFICARUSUARIOID', '/api/administrador/usuarios/modificar/');
 
-//DELETE
-define('ELIMINARUSUARIOID', '/api/administrador/usuarios/eliminar/?');
+//Usuarios
+//GET
+define('RANKING', '/api/usuario/ranking');
 ?>
