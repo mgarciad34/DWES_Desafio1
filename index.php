@@ -1,7 +1,6 @@
 <?php
 
 session_start(); // Inicia la sesión
-
 header("Content-Type: application/json");
 
 require 'config/routes.php';
@@ -28,19 +27,22 @@ switch ($requestMethod) {
               header("HTTP/1.1 400 Bad Request");
             }
         }else{
-          $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+            if(obtenerRol() === "0"){
+                $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
           
-          if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false) {
-              $id = end($urlArray);
-              $result = databaseController::leerDatosId($db->getConnection(), $id);
-
-              if ($result !== null) {
-                  header("HTTP/1.1 200 OK");
-                  echo json_encode($result);
-              } else {
-                  header("HTTP/1.1 400 Bad Request");
-              }
-          }
+                if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'listarid') !== false) {
+                    $id = end($urlArray);
+                    $result = databaseController::leerDatosId($db->getConnection(), $id);
+      
+                    if ($result !== null) {
+                        header("HTTP/1.1 200 OK");
+                        echo json_encode($result);
+                    } else {
+                        header("HTTP/1.1 400 Bad Request");
+                    }
+      
+                }
+            }
         }
       }else if (obtenerRol() === "1") {
             // Procesa solicitudes para un rol diferente
@@ -185,9 +187,20 @@ switch ($requestMethod) {
         break;
 
     case 'DELETE':
-        if (obtenerRol() === "0") {
-            // Procesar solicitudes DELETE para rol 0
-        } elseif (obtenerRol() === "1") {
+        if(obtenerRol() === "0"){
+            $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+      
+            if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'eliminar') !== false) {
+                $id = end($urlArray);
+                $result = databaseController::eliminarUsuarioId($db->getConnection(), $id);
+                if ($result !== null) {
+                    header("HTTP/1.1 200 OK");
+                    echo json_encode($result);
+                } else {
+                    header("HTTP/1.1 400 Bad Request");
+                }
+            }
+        }elseif (obtenerRol() === "1") {
             // Procesar solicitudes DELETE para rol 1
         } else {
             // Procesar otras solicitudes DELETE

@@ -36,8 +36,8 @@ public static function leerDatosId($conexion, $id){
     return leerDatosPorID($conexion, $id);
 }
 
-public static function eliminarUsuarioId($conexion, Personas $personas){
-    return eliminarUsuarioPorID($conexion, $personas->getId());
+public static function eliminarUsuarioId($conexion, $id){
+    return eliminarUsuarioPorID($conexion, $id);
 }
 
 public static function cambiarContrasena($conexion, $id, $nuevaContrasena){

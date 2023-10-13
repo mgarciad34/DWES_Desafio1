@@ -152,15 +152,23 @@ function eliminarUsuarioPorID($conexion, $id) {
     $consulta = "DELETE FROM personas WHERE ID = ?";
     if ($stmt = $conexion->prepare($consulta)) {
         $stmt->bind_param("s", $id);
-    if ($stmt->execute()) {
-            $stmt->close();
-            return true;
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
+                // Al menos un registro se eliminó con éxito
+                $stmt->close();
+                return true;
+            } else {
+                // No se eliminaron registros, pero la consulta se ejecutó sin errores
+                $stmt->close();
+                return false;
+            }
         } else {
+            // Error en la ejecución de la consulta
             $stmt->close();
             return false;
         }
     } else {
-        $stmt->close();
+        // Error en la preparación de la consulta
         return false;
     }
 }
