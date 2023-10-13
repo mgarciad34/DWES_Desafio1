@@ -5,12 +5,14 @@ header("Content-Type: application/json");
 require 'config/routes.php';
 require('Model/Personas.php');
 require 'Controller/databaseController.php';
+require 'Controller/juegoBuscaminasController.php';
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 $paths = $_SERVER['REQUEST_URI'];
 $argus = explode('/', $paths);
 unset($argus[0]);
 $rol = null;
+$idLogin = null;
 $db = new Database();
 
 switch ($requestMethod) {
@@ -94,9 +96,30 @@ switch ($requestMethod) {
                 } else {
                     header("HTTP/1.1 400 Bad Request");
                 }
-            } elseif (obtenerRol() === "1") {
-                // Procesar solicitud para un rol diferente
-            } else {
+            }else {
+                header("HTTP/1.1 400 Bad Request");
+            }
+        }else if (obtenerRol() === "1") {
+            $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+            
+            if(count($urlArray) === 6){
+                $result = juegoBuscaminasController::crearTableroJuego($db->getConnection(), POSICIONESTABLERO, MINAS, $urlArray[4]);
+                if ($result !== null) {
+                    header("HTTP/1.1 200 OK");
+                    // echo json_encode($result);
+                } else {
+                    header("HTTP/1.1 400 Bad Request");
+                }
+
+            }else if(count($urlArray) === 8){
+                $result = juegoBuscaminasController::crearTableroJuego($db->getConnection(), $urlArray[5], $urlArray[6], $urlArray[4]);
+                if ($result !== null) {
+                    header("HTTP/1.1 200 OK");
+                    // echo json_encode($result);
+                } else {
+                    header("HTTP/1.1 400 Bad Request");
+                }
+            }else{
                 header("HTTP/1.1 400 Bad Request");
             }
         }
@@ -243,3 +266,5 @@ function obtenerRol()
         echo json_encode(["message" => "No se ha iniciado sesión"]);
     }
 }
+
+

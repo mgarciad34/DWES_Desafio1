@@ -19,4 +19,5 @@ define('MODIFICARUSUARIOID', '/api/administrador/usuarios/modificar/');
 //Usuarios
 //GET
 define('RANKING', '/api/usuario/ranking');
+
 ?>

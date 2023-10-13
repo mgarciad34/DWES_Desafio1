@@ -27,7 +27,6 @@ function login($conexion, $email, $pass) {
     }
 }
 
-
 /*echo json_encode(login($db->getConnection(), 0, "administrador"));
 echo json_encode(insertarDatos($db->getConnection(), 1, "pswd001", 1, "nombre1", "usuario1@email.com", 0, 0, 0, 0));*/
 
@@ -235,6 +234,24 @@ function mostrarRanking($conexion) {
         $stmt->close();
         return false;
     }
+}
+
+
+function insertarTablero($conexion, $idU, $to, $tj, $finalizada) {
+    $sql = "INSERT INTO partidas (idU, oculto, tj, finalizada) VALUES (?, ?, ?, ?)";
+    $stmt = $conexion->prepare($sql);
+    if (!$stmt) {
+        return array("success" => false, "message" => "Error al preparar la consulta: " . $conexion->error);
+    }
+    $stmt->bind_param("isss", $idU, $to, $tj, $finalizada);
+    if ($stmt->execute()) {
+        $stmt->close();
+        return array("success" => true, "message" => "Datos insertados correctamente.");
+    } else {
+        $stmt->close();
+        return array("success" => false, "message" => "Error al insertar datos: " . $stmt->error);
+    }
+    $stmt->close();
 }
 
 ?>
