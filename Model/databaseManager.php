@@ -212,7 +212,7 @@ function actualizarDatosPorId($conexion, $id, $data) {
 }
 
 function mostrarRanking($conexion) {
-    $consulta = "SELECT * FROM personas ORDER BY partidasGanadas DESC";
+    $consulta = "SELECT ID, PARTIDASJUGADAS, PARTIDASGANADAS FROM personas ORDER BY PARTIDASGANADAS DESC";
     if ($stmt = $conexion->prepare($consulta)) {
         if ($stmt->execute()) {
             $resultados = $stmt->get_result();
