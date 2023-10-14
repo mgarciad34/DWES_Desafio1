@@ -258,4 +258,23 @@ function insertarTablero($conexion, $idU, $to, $tj, $finalizada) {
     $stmt->close();
 }
 
+function rendirse($conexion, $idPartida, $idJugador){
+    $sql = "UPDATE partidas SET finalizada = 'true' WHERE id = ? AND idU = ?";
+    $stmt = $conexion->prepare($sql);
+
+    if (!$stmt) {
+        return array("success" => false, "message" => "Error al preparar la consulta: " . $conexion->error);
+    }
+
+    $stmt->bind_param("ii", $idPartida, $idJugador);
+
+    if ($stmt->execute()) {
+        $stmt->close();
+        return array("success" => true, "message" => "Partida finalizada");
+    } else {
+        $stmt->close();
+        return array("success" => false, "message" => "Error al modificar dato 'finalizada': " . $stmt->error);
+    }
+}
+
 ?>

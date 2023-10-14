@@ -140,18 +140,36 @@ switch ($requestMethod) {
                 }
             }else if(str_contains("/api/administrador/usuarios/modificar/", $paths)){
                 //No funciona
-                $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+                //$urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+                //$requestBody = file_get_contents("php://input");
+                //$data = json_decode($requestBody);
+                //if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'modificar') !== false) {
+                //    $id = end($urlArray);
+                //    $result = databaseController::actualizarDatos($db->getConnection(), $id, $data); 
+                //}
+            }else if(str_contains("/api/administrador/rendirse/", $paths)){
                 $requestBody = file_get_contents("php://input");
                 $data = json_decode($requestBody);
-                if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'modificar') !== false) {
-                    $id = end($urlArray);
-                    $result = databaseController::actualizarDatos($db->getConnection(), $id, $data); 
+                if($data !== null and isset($data->idPartida) and isset($data->idJugador)) {
+                    $result = databaseController::rendirsePartida($db->getConnection(), $data->idPartida, $data->idJugador);
+                } else {
+                    solicitudError();
                 }
             }else{
                 solicitudError();
             }
         }else if(obtenerRol() === "1"){
-
+            if(str_contains("/api/jugador/rendirse/", $paths)){
+                $requestBody = file_get_contents("php://input");
+                $data = json_decode($requestBody);
+                if($data !== null and isset($data->idPartida) and isset($data->idJugador)) {
+                    $result = databaseController::rendirsePartida($db->getConnection(), $data->idPartida, $data->idJugador);
+                } else {
+                    solicitudError();
+                }
+            }else{
+                solicitudError();
+            }
         }else{
             solicitudError();
         }

@@ -114,5 +114,15 @@ public static function rankingGanadas($conexion){
     }
 }
 
+public static function rendirsePartida($conexion, $idPartida, $idJugador){
+    $result = rendirse($conexion, $idPartida, $idJugador);
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
+}
+
 }
 ?>
