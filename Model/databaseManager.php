@@ -1,11 +1,12 @@
 <?php
 require 'config/Database.php';
+require 'Model/mail.php';
 
 function login($conexion, $email, $pass) {
     $consulta = "SELECT ROL FROM personas WHERE EMAIL = ? AND PASSWORD = ?";
     
     if ($stmt = $conexion->prepare($consulta)) {
-        $stmt->bind_param("ss", $email, $pass);
+        $stmt->bind_param("ss", $email, md5($pass));
 
         if ($stmt->execute()) {
             $resultados = $stmt->get_result();
@@ -37,15 +38,18 @@ function insertarDatos($conexion, $id, $password, $rol, $nombre, $email, $alta, 
     if (!$stmt) {
         return array("success" => false, "message" => "Error al preparar la consulta: " . $conexion->error);
     }
-    $stmt->bind_param("isssssiii", $id, $password, $rol, $nombre, $email, $alta, $activo, $partidasJugadas, $partidasGanadas);
+    $pass = md5($password);
+    $stmt->bind_param("isssssiii", $id, $pass, $rol, $nombre, $email, $alta, $activo, $partidasJugadas, $partidasGanadas);
     if ($stmt->execute()) {
         $stmt->close();
+        enviarCorreo($email, "Alta de usuario", "Su usuario acaba de ser dado de alta en el juego del Buscaminas");
         return array("success" => true, "message" => "Datos insertados correctamente.");
     } else {
         $stmt->close();
         return array("success" => false, "message" => "Error al insertar datos: " . $stmt->error);
     }
     $stmt->close();
+    
 }
 
 function generarAltaBaja($conexion, $id, $funcion) {

@@ -2,7 +2,6 @@
 session_start(); // Inicia la sesión
 header("Content-Type: application/json");
 
-require 'config/routes.php';
 require('Model/Personas.php');
 require 'Controller/databaseController.php';
 require 'Controller/juegoBuscaminasController.php';
@@ -194,4 +193,4 @@ function solicitudError(){
     
 }
 
-
+?>
