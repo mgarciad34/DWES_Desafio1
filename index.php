@@ -31,7 +31,7 @@ switch ($requestMethod) {
                     solicitudError();
                 }
             }
-        }else if(obtenerRol() === "1"){
+        }else if(obtenerRol() === "0" || obtenerRol() === "1"){
             if (str_contains("/api/usuario/ranking/", $paths)) {
                 $result = databaseController::rankingGanadas($db->getConnection());
             }else{
