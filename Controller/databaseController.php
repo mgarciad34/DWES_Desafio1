@@ -4,16 +4,35 @@ require 'Model/databaseManager.php';
 
 class databaseController{
     
-public static function iniciarSesion($conexion, $email, $pass){
-    return login($conexion, $email, $pass);
+public static function iniciarSesion($conexion, $email, $pass, $rol){
+    $rol =  login($conexion, $email, $pass);
+    if ($rol !== null) {
+        header("HTTP/1.1 200 OK");
+        $_SESSION['rol'] = $rol;
+        echo $rol;
+        return $rol;
+    } else {
+        header("HTTP/1.1 401 Unauthorized");
+    }
 }
 
 public static function anadirUsuario($conexion, Personas $personas){
-    return insertarDatos($conexion, $personas->getId(), $personas->getPassword(), $personas->getRol(), $personas->getNombre(), $personas->getEmail(), $personas->getAlta(), $personas->getActivo(), 0, 0);
+    $result = insertarDatos($conexion, $personas->getId(), $personas->getPassword(), $personas->getRol(), $personas->getNombre(), $personas->getEmail(), $personas->getAlta(), $personas->getActivo(), 0, 0);
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+    } else {
+        header("HTTP/1.1 401 Unauthorized");
+    }
 }
 
 public static function altaUsuario($conexion, $id){
-    return generarAltaBaja($conexion, $id, "Alta");
+    $result = generarAltaBaja($conexion, $id, "Alta");
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+    } else {
+        header("HTTP/1.1 401 Unauthorized");
+    }
 }
 
 public static function bajaUsuario($conexion, $id){
@@ -21,7 +40,13 @@ public static function bajaUsuario($conexion, $id){
 }
 
 public static function activoUsuario($conexion, $id){
-    return generarActivoDesactivo($conexion, $id, "Activo");
+    $result = generarActivoDesactivo($conexion, $id, "Activo");
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+    } else {
+        header("HTTP/1.1 401 Unauthorized");
+    }
 }
 
 public static function desactivoUsuario($conexion, $id){
@@ -29,29 +54,65 @@ public static function desactivoUsuario($conexion, $id){
 }
 
 public static function leerDatos($conexion){
-    return leerTodosLosDatos($conexion);
+    $result = leerTodosLosDatos($conexion);
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+      } else {
+        header("HTTP/1.1 400 Bad Request");
+      }
 }
 
 public static function leerDatosId($conexion, $id){
-    return leerDatosPorID($conexion, $id);
+    $result =  leerDatosPorID($conexion, $id);
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
 }
 
 public static function eliminarUsuarioId($conexion, $id){
-    return eliminarUsuarioPorID($conexion, $id);
+    $result = eliminarUsuarioPorID($conexion, $id);
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
 }
 
 public static function cambiarContrasena($conexion, $id, $nuevaContrasena){
-    return cambiarContrasenaPorID($conexion, $id, $nuevaContrasena);
+    $result = cambiarContrasenaPorID($conexion, $id, $nuevaContrasena);
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+    } else {
+        header("HTTP/1.1 401 Unauthorized");
+    }
 }
 
 public static function actualizarDatos($conexion, $id, $data){
-    return actualizarDatosPorId($conexion, $id, $data);
+    $result = actualizarDatosPorId($conexion, $id, $data);
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
 }
 
 public static function rankingGanadas($conexion){
-    return mostrarRanking($conexion);
+    $result = mostrarRanking($conexion);
+
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode($result);
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
 }
 
 }
-
 ?>

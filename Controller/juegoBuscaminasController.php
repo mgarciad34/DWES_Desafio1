@@ -7,7 +7,14 @@ public static function crearTableroJuego($db, $posicionesTablero, $posicionesMin
     $tablero = iniciarTablero($posicionesTablero, 0);
     $tablero = colocarMinas($tablero, $posicionesMinas);
     $tablerousuario = iniciarTablero($posicionesTablero, "t");
-    return insertarTablero($db, $id, json_encode($tablero), json_encode($tablerousuario), "false");
+    $result = insertarTablero($db, $id, json_encode($tablero), json_encode($tablerousuario), "false");
+    if ($result !== null) {
+        header("HTTP/1.1 200 OK");
+        return $result;
+    } else {
+        header("HTTP/1.1 400 Bad Request");
+    }
+    
 }
 
 }
