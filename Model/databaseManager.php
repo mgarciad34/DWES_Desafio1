@@ -179,7 +179,7 @@ function eliminarUsuarioPorID($conexion, $id) {
 function cambiarContrasenaPorID($conexion, $id, $nuevaContrasena) {
     $consulta = "UPDATE personas SET PASSWORD = ? WHERE ID = ?";
     if ($stmt = $conexion->prepare($consulta)) {
-        $stmt->bind_param("ss", $nuevaContrasena, $id);
+        $stmt->bind_param("ss", md5($nuevaContrasena), $id);
         if ($stmt->execute()) {
             $stmt->close();
             return "Contraseña Cambiada";
