@@ -277,4 +277,43 @@ function rendirse($conexion, $idPartida, $idJugador){
     }
 }
 
+function obtenerDatosPartida($conexion, $idPartida, $idUsuario) {
+    $sql = "SELECT * FROM partidas WHERE id = ? AND idU = ?";
+    $stmt = $conexion->prepare($sql);
+    if (!$stmt) {
+        return array("success" => false, "message" => "Error al preparar la consulta: " . $conexion->error);
+    }
+    $stmt->bind_param("ii", $idPartida, $idUsuario);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    
+    if ($resultado->num_rows > 0) {
+        $stmt->close();
+        $conexion->close();
+        return $resultado->fetch_assoc();
+    } else {
+        $stmt->close();
+        $conexion->close();
+        return null;
+    }
+}
+
+function actualizarTableroUsuario($conexion, $idPartida, $idJugador){
+    $sql = "UPDATE partidas SET tj = ? WHERE id = ? AND idU = ?";
+    $stmt = $conexion->prepare($sql);
+
+    if (!$stmt) {
+        return array("success" => false, "message" => "Error al preparar la consulta: " . $conexion->error);
+    }
+
+    $stmt->bind_param("iii", $idJugador, $idPartida, $idJugador);
+
+    if ($stmt->execute()) {
+        $stmt->close();
+        return array("success" => true, "message" => "Partida finalizada");
+    } else {
+        $stmt->close();
+        return array("success" => false, "message" => "Error al modificar dato 'finalizada': " . $stmt->error);
+    }
+}
 ?>

@@ -114,6 +114,27 @@ public static function rankingGanadas($conexion){
     }
 }
 
+public static function jugarPartida($conexion, $idPartida, $idJugador, $casilla) {
+    $consultaDatosPartida = obtenerDatosPartida($conexion, $idPartida, $idJugador);
+    
+    if (is_array($consultaDatosPartida)) {
+        $consultaDatosPartida = json_encode($consultaDatosPartida);
+    }
+
+    $data = json_decode($consultaDatosPartida, true);
+    $tableroOcultoBBDD = $data['oculto']; // Supongamos que $tableroOcultoBBDD es un array
+    if (is_array($tableroOcultoBBDD)) {
+        $stringOculto = implode(',', $tableroOcultoBBDD);
+        $stringOculto = implode('[');
+        echo $stringOculto;
+    }
+
+    echo json_encode($tableroOcultoBBDD);
+}
+
+
+
+
 public static function rendirsePartida($conexion, $idPartida, $idJugador){
     $result = rendirse($conexion, $idPartida, $idJugador);
     if ($result !== null) {
@@ -123,6 +144,7 @@ public static function rendirsePartida($conexion, $idPartida, $idJugador){
         header("HTTP/1.1 400 Bad Request");
     }
 }
-
 }
+
+
 ?>

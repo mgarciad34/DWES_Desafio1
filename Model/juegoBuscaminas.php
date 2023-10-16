@@ -29,6 +29,8 @@ function colocarMinas($tablero, $minas) {
     return $tablero;
 }
 
+
+
 function generarPistas($tablero) {
     for ($i = 0; $i < count($tablero); $i++) {
         if ($tablero[$i] === "0") {
@@ -58,4 +60,6 @@ function generarTableroJugador($tableroJugador, $posiciones, $valor) {
 
     return $tableroJugador;
 }
+
+
 ?>
