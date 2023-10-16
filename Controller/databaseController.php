@@ -125,15 +125,20 @@ public static function jugarPartida($conexion, $idPartida, $idJugador, $casilla)
     $tableroOcultoBBDD = $data['oculto']; 
     $ocultoResult = str_replace([","], '', $tableroOcultoBBDD);
     $oculto = explode(' ', $ocultoResult);
-    $tableroOculto = json_encode($oculto);
+    //$tableroOculto = json_encode($oculto);
 
     $tableroJugadorBBDD = $data['tj']; 
     $jugadorResult = str_replace([","], '', $tableroJugadorBBDD);
     $jugador = explode(' ', $jugadorResult);
-    $tableroJugador = json_encode($jugador);
+    //
     
-    
-
+    if($oculto[$casilla-1] != "M"){
+        $jugador[$casilla-1] = $oculto[$casilla-1];
+        $tableroFinal = implode(", ", $jugador);
+       actualizarTableroUsuario($conexion, $tableroFinal, $idPartida, $idJugador);
+    }else if($oculto[$casilla-1] == "M"){
+        rendirse($conexion, $idPartida, $idJugador);
+    }
 }
 
 

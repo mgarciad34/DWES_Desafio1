@@ -160,7 +160,7 @@ switch ($requestMethod) {
                 $requestBody = file_get_contents("php://input");
                 $data = json_decode($requestBody);
                 if($data !== null and isset($data->idPartida) and isset($data->idUsuario) and isset($data->casilla)) {
-                    $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $data->idUsuario, 0);
+                    $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $data->idUsuario, $data->casilla);
                 } else {
                     solicitudError();
                 }
