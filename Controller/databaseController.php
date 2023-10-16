@@ -122,14 +122,17 @@ public static function jugarPartida($conexion, $idPartida, $idJugador, $casilla)
     }
 
     $data = json_decode($consultaDatosPartida, true);
-    $tableroOcultoBBDD = $data['oculto']; // Supongamos que $tableroOcultoBBDD es un array
-    if (is_array($tableroOcultoBBDD)) {
-        $stringOculto = implode(',', $tableroOcultoBBDD);
-        $stringOculto = implode('[');
-        echo $stringOculto;
-    }
+    $tableroOcultoBBDD = $data['oculto']; 
+    $ocultoResult = str_replace([","], '', $tableroOcultoBBDD);
+    $oculto = explode(' ', $ocultoResult);
+    $tableroOculto = json_encode($oculto);
 
-    echo json_encode($tableroOcultoBBDD);
+    $tableroJugadorBBDD = $data['tj']; 
+    $jugadorResult = str_replace([","], '', $tableroJugadorBBDD);
+    $jugador = explode(' ', $jugadorResult);
+    $tableroJugador = json_encode($jugador);
+    
+    
 }
 
 
