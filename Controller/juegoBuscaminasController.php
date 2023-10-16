@@ -1,13 +1,15 @@
 <?php
+require 'Model/juegoBuscaminas.php';
 
-require "Model/juegoBuscaminas.php";
 class juegoBuscaminasController{
 
 public static function crearTableroJuego($db, $posicionesTablero, $posicionesMinas, $id){
     $tablero = iniciarTablero($posicionesTablero, 0);
     $tablero = colocarMinas($tablero, $posicionesMinas);
     $tablerousuario = iniciarTablero($posicionesTablero, "t");
-    $result = insertarTablero($db, $id, json_encode($tablero), json_encode($tablerousuario), "false");
+    $datosTableroUsuario = implode(", ", $tablerousuario);
+    $datosTableroOculto = implode(", ", $tablero);
+    $result = insertarTablero($db, $id, $datosTableroOculto, $datosTableroUsuario, "false");
     if ($result !== null) {
         header("HTTP/1.1 200 OK");
         return $result;
