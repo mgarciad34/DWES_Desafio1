@@ -1,34 +1,67 @@
-# Desafio 1 - Servidor - Buscaminas
+# API de Gestión de Usuarios y Juego Buscaminas
 
-Vamos a realizar una aplicación WEB que permita gestionar partidas de buscamina. La aplicación guardará las partidas activas y el histórico de las partidas jugadas (hayan sido ganadas o perdidas); también se contabilizará la cantidad de partidas ganadas.
-Asimismo la aplicación permitirá un sistema de gestión de usuarios accesible solo por los administradores.
+Este es un archivo README para el código PHP que implementa una API de gestión de usuarios y funcionalidad del juego Buscaminas. A continuación, se proporciona una descripción general de las rutas y funcionalidades implementadas en este código.
 
-Nuestra aplicación tendrá los siguientes roles: administrador y jugador.
+## Introducción
 
-El administrador gestionará: altas, bajas, modificaciones, activaciones y accesos de los usuarios. El administrador será otro jugador que podrá seleccionar como quiere acceder a la aplicación. Si accede como administrador podrá : listar los usuarios, buscar
-un usuario concreto, registrar, modificar y eliminar usuarios. También estará habilitado para cambiar la contraseña de un usuario concreto. 
-Si entra como jugador será un jugador más.
+Este código PHP implementa una API que permite realizar las siguientes acciones:
 
-El jugador podrá crear partidas personalizadas o estándar. Si en la url se especifica tamaño de tablero y minas se creará un buscaminas con esas características. En caso contrario se creará un buscaminas con un tamaño y número de minas predefinidos
-(esta cantidad deberá estar parametrizada en la clase de constantes de la aplicación). El jugador jugará indicando (POST + json) qué casilla quiere destapar, el cliente le informará de lo que pueda ocurrir: no tienes partida creada, no tienes partida abierta, partida abierta y has destapado una casilla no mina, partida abierta y has destapado una mina… En caso de que no haya partida abierta se informa de ello. En caso de partida abierta se informa al cliente de ello y se le enviarán los tableros en json para que el cliente haga lo que estime oportuno con ellos.
+- Iniciar sesión como administrador o usuario.
+- Listar usuarios (solo para administradores).
+- Obtener el ranking de partidas ganadas por usuarios (solo para administradores y usuarios).
+- Generar tableros de juego Buscaminas.
+- Realizar diversas operaciones de gestión de usuarios (alta, baja, activar/desactivar, cambiar contraseña, eliminar, etc.).
+- Rendirse en una partida de Buscaminas.
+- Jugar una casilla en una partida de Buscaminas.
 
-El jugador podrá solicitar rendirse, (verbo y forma de proporcionar información al servidor depende del programador). Se cerrará esa partida y se informará al cliente de cómo estaban los tableros y de que se ha cerrado esa partida que se considera perdida.
+## Rutas y Funcionalidades
 
-El jugador también podrá solicitar un cambio de contraseña, para ello debe proporcionar su email al servidor (piensa el verbo y el modo más correcto de hacer esto).
+A continuación se describen las rutas y funcionalidades disponibles en este código:
 
-Finalmente el jugador podrá solicitar el ranking de jugadores. Se le devolverá una lista de usuarios ordenada de mayor a menor de más ganadas a menos. De igual manera el verbo y la forma de solicitar el ranking depende del programador.
+- `GET /api/administrador/usuarios/listar/`: Lista todos los usuarios (solo para administradores).
 
+- `GET /api/usuario/ranking/`: Obtiene el ranking de partidas ganadas por usuarios (disponible para administradores y usuarios).
 
+- `GET /api/usuario/generar/tablero/{ancho}/{alto}/{minas}`: Genera un tablero de juego Buscaminas con las dimensiones especificadas.
 
-## Descripcion de la funcionalidad del Login
+- `POST /api/login`: Inicia sesión como administrador o usuario.
 
-![Imagen Login](https://drive.google.com/file/d/19Juu4ia0pSajYTkayPQBfcl-BE85ffSN/view?usp=sharing)
+- `POST /api/administrador/usuarios/insertar/`: Inserta un nuevo usuario (solo para administradores).
 
+- `PUT /api/administrador/usuarios/alta/`: Activa un usuario (solo para administradores).
 
-## Descripcion de la funcionalidad del Administrador
+- `PUT /api/administrador/usuarios/baja/`: Desactiva un usuario (solo para administradores).
 
+- `PUT /api/administrador/usuarios/activo/`: Activa un usuario (solo para administradores).
 
+- `PUT /api/administrador/usuarios/desactivo/`: Desactiva un usuario (solo para administradores).
 
-## Descripcion de la funcionalidad del Administrador
+- `PUT /api/administrador/usuarios/cambiarcontrasena/`: Cambia la contraseña de un usuario (solo para administradores).
 
+- `PUT /api/administrador/usuarios/modificar/`: Modifica los datos de un usuario (a implementar).
 
+- `PUT /api/administrador/rendirse/`: Permite a un usuario rendirse en una partida de Buscaminas.
+
+- `PUT /api/jugar/`: Permite a un usuario jugar una casilla en una partida de Buscaminas.
+
+- `DELETE /api/administrador/usuarios/eliminar/{id}`: Elimina un usuario por su ID (solo para administradores).
+
+## Uso
+
+Para utilizar esta API, se deben realizar solicitudes HTTP a las rutas correspondientes utilizando el método HTTP adecuado (GET, POST, PUT, DELETE). Las solicitudes deben incluir los datos necesarios en el cuerpo de la solicitud, en formato JSON.
+
+## Requisitos
+
+Para utilizar esta API, se deben cumplir ciertos requisitos, como la autenticación y los permisos adecuados. Asegúrese de que su sistema cumple con estos requisitos antes de utilizar la API.
+
+## Contribuciones
+
+Este proyecto es de código abierto, y las contribuciones son bienvenidas. Si desea contribuir o informar sobre problemas, hágalo a través de las solicitudes de extracción (pull requests) en GitHub.
+
+## Licencia
+
+Este proyecto se distribuye bajo la Licencia MIT. Consulte el archivo LICENSE para obtener más información.
+
+---
+
+Este README es una descripción general del código PHP proporcionado. Asegúrese de que la documentación esté actualizada y sea completa antes de desplegar este código en un entorno de producción.
