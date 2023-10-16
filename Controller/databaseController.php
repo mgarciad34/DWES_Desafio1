@@ -116,6 +116,7 @@ public static function rankingGanadas($conexion){
 
 public static function jugarPartida($conexion, $idPartida, $idJugador, $casilla) {
     $consultaDatosPartida = obtenerDatosPartida($conexion, $idPartida, $idJugador);
+<<<<<<< HEAD
     
     if (is_array($consultaDatosPartida)) {
         $consultaDatosPartida = json_encode($consultaDatosPartida);
@@ -133,6 +134,13 @@ public static function jugarPartida($conexion, $idPartida, $idJugador, $casilla)
     $tableroJugador = json_encode($jugador);
     
     
+=======
+    $data = json_decode($consultaDatosPartida, true);
+    $tableroOcultoBBDD = $data['oculto']; 
+    $tableroOculto = explode(", ", $tableroOcultoBBDD);
+
+    echo json_encode($tableroOcultoBBDD);
+>>>>>>> bd457f0da366091782ef257d1c1becb911544a70
 }
 
 
