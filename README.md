@@ -26,7 +26,7 @@ A continuación se describen las rutas y funcionalidades disponibles en este có
 
 - `POST /api/login`: Inicia sesión como administrador o usuario.
 
-  ![LoginAdministrador](.\images\LoginAdministrador.png)
+  ![LoginAdministrador](https://github.com/mgarciad34/DWES_Desafio1/blob/administrador/images/LoginAdministrador.png)
 
 - `POST /api/administrador/usuarios/insertar/`: Inserta un nuevo usuario (solo para administradores).
 
