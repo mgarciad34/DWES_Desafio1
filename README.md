@@ -26,6 +26,8 @@ A continuación se describen las rutas y funcionalidades disponibles en este có
 
 - `POST /api/login`: Inicia sesión como administrador o usuario.
 
+  ![image-20231017094012030](C:\Users\Manuel\AppData\Roaming\Typora\typora-user-images\image-20231017094012030.png)
+
 - `POST /api/administrador/usuarios/insertar/`: Inserta un nuevo usuario (solo para administradores).
 
 - `PUT /api/administrador/usuarios/alta/`: Activa un usuario (solo para administradores).
