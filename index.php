@@ -48,51 +48,47 @@ switch ($requestMethod) {
             }   
         break;
     case 'POST':
-        //Login ADMINISTRADORES / USUARIOS
-        if (str_contains("/api/login", $paths)) {
-            $requestBody = file_get_contents("php://input");
-            $data = json_decode($requestBody);
-            if ($data !== null and isset($data->email) and isset($data->password)) {
-                $rol = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password, $rol);
+        if ($data !== null and isset($data->emailadmin) and isset($data->passwordadmin)) {
+            $rol = databaseController::iniciarSesion($db->getConnection(), $data->emailadmin, $data->passwordadmin, $rol);
+            
+            if(str_contains("/api/administrador/usuarios/insertar/", $paths)){
+                switch ($rol[7]) {
+                    case 0:
+                        $requestBody = file_get_contents("php://input");
+                        $data = json_decode($requestBody);
+                        if ($data !== null and isset($data->id) and isset($data->password) and isset($data->rol) and isset($data->nombre) and isset($data->email) and isset($data->alta) and isset($data->activo) and isset($data->partidasJugadas) and isset($data->partidasGanadas)) {
+                            $persona = new Personas($data->id, $data->password, $data->rol, $data->nombre, $data->email, $data->alta, $data->activo, 0, 0);
+                            $result = databaseController::anadirUsuario($db->getConnection(), $persona);
+                        }else{
+                            solicitudError();
+                        }    
+                        break;
+                    
+                    default:
+                        solicitudError();
+                        break;
+                }
+            //Generar Tablero -> Funcionalidad común
+            }else if ($rol[7] === "0" || $rol[7] === "1") {
+                $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+                if($urlArray[2] === "generar" && $urlArray[3] === "tablero"){
+                    if(count($urlArray) === 6){
+                        $result = juegoBuscaminasController::crearTableroJuego($db->getConnection(), POSICIONESTABLERO, MINAS, $urlArray[4]);
+                    }else if(count($urlArray) === 8){
+                        $result = juegoBuscaminasController::crearTableroJuego($db->getConnection(), $urlArray[5], $urlArray[6], $urlArray[4]);
+                    }else{
+                        header("HTTP/1.1 400 Bad Request");
+                    }
+                }
             }else{
+                
                 solicitudError();
             }
-        //Insertar USUARIOS -> Funcionalidad del Administrador
-        }else if(str_contains("/api/administrador/usuarios/insertar/", $paths)){
-            switch ($rol) {
-                case 0:
-                    $requestBody = file_get_contents("php://input");
-                    $data = json_decode($requestBody);
-                    if ($data !== null and isset($data->id) and isset($data->password) and isset($data->rol) and isset($data->nombre) and isset($data->email) and isset($data->alta) and isset($data->activo) and isset($data->partidasJugadas) and isset($data->partidasGanadas)) {
-                        $persona = new Personas($data->id, $data->password, $data->rol, $data->nombre, $data->email, $data->alta, $data->activo, 0, 0);
-                        $result = databaseController::anadirUsuario($db->getConnection(), $persona);
-                    }else{
-                        solicitudError();
-                    }    
-                    break;
-                
-                default:
-                    solicitudError();
-                    break;
-            }
-        //Generar Tablero -> Funcionalidad común
-        }else if ($rol === "0" || $rol === "1") {
-            $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
-            if($urlArray[2] === "generar" && $urlArray[3] === "tablero"){
-                if(count($urlArray) === 6){
-                    $result = juegoBuscaminasController::crearTableroJuego($db->getConnection(), POSICIONESTABLERO, MINAS, $urlArray[4]);
-                }else if(count($urlArray) === 8){
-                    $result = juegoBuscaminasController::crearTableroJuego($db->getConnection(), $urlArray[5], $urlArray[6], $urlArray[4]);
-                }else{
-                    header("HTTP/1.1 400 Bad Request");
-                }
-            }
         }else{
-            echo $rol;
             http_response_code(405); // Código de estado 405 Bad Request
             echo json_encode(["error" => "Verbo no soportado"]);
         }
-        break;
+            break;
     case 'PUT':
         if ($rol === "0") {
             if (str_contains("/api/administrador/usuarios/alta/", $paths)) {
