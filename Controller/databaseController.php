@@ -102,7 +102,7 @@ public static function cambiarContrasena($conexion, $id, $nuevaContrasena){
 }
 
 public static function actualizarDatos($conexion, $id, $data){
-    $result = actualizarDatosPorId($conexion, $id, $data);
+    $result = modificarDatos($conexion, $id, $data->password, $data->rol, $data->nombre, $data->email, $data->alta, $data->activo, $data->partidasJugadas, $data->partidasGanadas);
     if ($result !== null) {
         header("HTTP/1.1 200 OK");
         echo json_encode($result);

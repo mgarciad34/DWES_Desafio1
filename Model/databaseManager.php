@@ -80,6 +80,7 @@ function insertarDatos($conexion, $id, $password, $rol, $nombre, $email, $alta, 
     
 }
 
+
 function generarAltaBaja($conexion, $id, $funcion) {
     $nuevoValorAlta = null;
     if($funcion === "Alta"){
@@ -222,26 +223,25 @@ function cambiarContrasenaPorID($conexion, $id, $nuevaContrasena) {
     
 }
 
-function actualizarDatosPorId($conexion, $id, $data) {
-    
-    foreach ($data as $key => $value) {
-        echo $key;
+function modificarDatos($conexion, $id, $password, $rol, $nombre, $email, $alta, $activo, $partidasJugadas, $partidasGanadas) {
+    $sql = "UPDATE personas SET password=?, rol=?, nombre=?, email=?, alta=?, activo=?, partidasJugadas=?, partidasGanadas=? WHERE id=?";
+    $stmt = $conexion->prepare($sql);
+    if (!$stmt) {
+        return array("success" => false, "message" => "Error al preparar la consulta: " . $conexion->error);
     }
-    echo $data->password;
-    
-    
-
-    /*$queryStart = "UPDATE personas SET";
-    $queryEnd = "WHERE id = ". $id;
-
-    $query = $queryStart . $queryInt . $queryEnd;
-        try{
-            mysqli_query($conexion, $query);
-            echo "Datos actualizados";
-        }catch(Exception $e){
-            echo "Fallo al actualizar: (" . $e->getMessage() . ") <br>";
-        }*/
+    $pass = md5($password);
+    $stmt->bind_param("sissiiiii", $pass, $rol, $nombre, $email, $alta, $activo, $partidasJugadas, $partidasGanadas, $id);
+    if ($stmt->execute()) {
+        $stmt->close();
+        enviarCorreo($email, "Modificacion de datos de tu usuario", "Se han modificado los datos de tu usuario de nuestro servicio");
+        return array("success" => true, "message" => "Datos modificados correctamente.");
+    } else {
+        $stmt->close();
+        return array("success" => false, "message" => "Error al modificar datos: " . $stmt->error);
+    }
 }
+
+
 
 function mostrarRanking($conexion) {
     $consulta = "SELECT ID, PARTIDASJUGADAS, PARTIDASGANADAS FROM personas ORDER BY PARTIDASGANADAS DESC";

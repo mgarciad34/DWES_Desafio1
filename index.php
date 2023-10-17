@@ -132,14 +132,12 @@ switch ($requestMethod) {
                         solicitudError();
                     }
                 }else if(str_contains("/api/administrador/usuarios/modificar/", $paths)){
-                    //No funciona
-                    //$urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
-                    //$requestBody = file_get_contents("php://input");
-                    //$data = json_decode($requestBody);
-                    //if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'modificar') !== false) {
-                    //    $id = end($urlArray);
-                    //    $result = databaseController::actualizarDatos($db->getConnection(), $id, $data); 
-                    //}
+                    $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+                    if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'modificar') !== false) {
+                        $id = $data->id;
+                       
+                        $result = databaseController::actualizarDatos($db->getConnection(), $id, $data); 
+                   }
                 }else if(str_contains("/api/administrador/rendirse/", $paths)){
                     $requestBody = file_get_contents("php://input");
                     $data = json_decode($requestBody);
@@ -158,6 +156,7 @@ switch ($requestMethod) {
                         solicitudError();
                     }
                 }else{
+                    echo "judio";
                     solicitudError();
                 }
             }else if($rol[7] === "1"){
