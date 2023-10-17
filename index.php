@@ -173,6 +173,14 @@ switch ($requestMethod) {
                 $data = json_decode($requestBody);
                 if($data !== null and isset($data->idPartida) and isset($data->idJugador)) {
                     $result = databaseController::rendirsePartida($db->getConnection(), $data->idPartida, $data->idJugador);
+                }else {
+                    solicitudError();
+                }
+            }else if(str_contains("/api/jugar/", $paths)){
+                $requestBody = file_get_contents("php://input");
+                $data = json_decode($requestBody);
+                if($data !== null and isset($data->idPartida) and isset($data->idUsuario) and isset($data->casilla)) {
+                    $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $data->idUsuario, $data->casilla);
                 } else {
                     solicitudError();
                 }
