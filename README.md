@@ -1,3 +1,4 @@
+
 # API de Gestión de Usuarios y Juego Buscaminas
 
 Este es un archivo README para el código PHP que implementa una API de gestión de usuarios y funcionalidad del juego Buscaminas. A continuación, se proporciona una descripción general de las rutas y funcionalidades implementadas en este código.
