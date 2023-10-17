@@ -137,6 +137,8 @@ public static function jugarPartida($conexion, $idPartida, $idJugador, $casilla)
         $tableroFinal = implode(", ", $jugador);
        actualizarTableroUsuario($conexion, $tableroFinal, $idPartida, $idJugador);
     }else if($oculto[$casilla-1] == "M"){
+        $tableroFinal = implode(", ", $jugador);
+        actualizarTableroUsuario($conexion, $tableroFinal, $idPartida, $idJugador);
         rendirse($conexion, $idPartida, $idJugador);
     }
 }
