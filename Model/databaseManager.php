@@ -6,7 +6,8 @@ function login($conexion, $email, $pass) {
     $consulta = "SELECT ROL FROM personas WHERE EMAIL = ? AND PASSWORD = ?";
     
     if ($stmt = $conexion->prepare($consulta)) {
-        $stmt->bind_param("ss", $email, md5($pass));
+        $password = md5($pass);
+        $stmt->bind_param("ss", $email, $password);
 
         if ($stmt->execute()) {
             $resultados = $stmt->get_result();

@@ -13,32 +13,39 @@ unset($argus[0]);
 $rol = null;
 $idLogin = null;
 $db = new Database();
+$requestBody = file_get_contents("php://input");
+$data = json_decode($requestBody);
 
 switch ($requestMethod) {
     case 'GET':
-        if (obtenerRol() === "0") {
-            if (str_contains('/api/administrador/usuarios/listar/', $paths)) {
-                $result = databaseController::leerDatos($db->getConnection());
-            }else{
-                $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
-                if(count($urlArray) === 7){
-                    if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'listar') !== false) {
-                        $id = $urlArray[5];
-                        $result = databaseController::leerDatosId($db->getConnection(), $id);
+        if ($data !== null and isset($data->email) and isset($data->password)) {
+                $rol = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password, $rol);
+                if ($rol[7] === "0") {
+                    if (str_contains("/api/usuario/ranking/", $paths)) {
+                        $result = databaseController::rankingGanadas($db->getConnection());
+                    }elseif (str_contains('/api/administrador/usuarios/listar/', $paths)) {
+                        $result = databaseController::leerDatos($db->getConnection());
+                    }else{
+                        $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+                        if(count($urlArray) === 7){
+                            if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'listar') !== false) {
+                                $id = $urlArray[5];
+                                $result = databaseController::leerDatosId($db->getConnection(), $id);
+                            }
+                        }
+                    }
+                }elseif ($rol[7] === "1"){
+                    if (str_contains("/api/usuario/ranking/", $paths)) {
+                        $result = databaseController::rankingGanadas($db->getConnection());
+                    }else{
+                        solicitudError();
                     }
                 }else{
                     solicitudError();
                 }
-            }
-        }else if(obtenerRol() === "0" || obtenerRol() === "1"){
-            if (str_contains("/api/usuario/ranking/", $paths)) {
-                $result = databaseController::rankingGanadas($db->getConnection());
             }else{
                 solicitudError();
-            }
-        }else{
-            solicitudError();
-        }
+            }   
         break;
     case 'POST':
         //Login ADMINISTRADORES / USUARIOS
@@ -46,13 +53,13 @@ switch ($requestMethod) {
             $requestBody = file_get_contents("php://input");
             $data = json_decode($requestBody);
             if ($data !== null and isset($data->email) and isset($data->password)) {
-                $return = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password, $rol);
+                $rol = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password, $rol);
             }else{
                 solicitudError();
             }
         //Insertar USUARIOS -> Funcionalidad del Administrador
         }else if(str_contains("/api/administrador/usuarios/insertar/", $paths)){
-            switch (obtenerRol()) {
+            switch ($rol) {
                 case 0:
                     $requestBody = file_get_contents("php://input");
                     $data = json_decode($requestBody);
@@ -69,7 +76,7 @@ switch ($requestMethod) {
                     break;
             }
         //Generar Tablero -> Funcionalidad común
-        }else if (obtenerRol() === "0" || obtenerRol() === "1") {
+        }else if ($rol === "0" || $rol === "1") {
             $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
             if($urlArray[2] === "generar" && $urlArray[3] === "tablero"){
                 if(count($urlArray) === 6){
@@ -87,7 +94,7 @@ switch ($requestMethod) {
         }
         break;
     case 'PUT':
-        if (obtenerRol() === "0") {
+        if ($rol === "0") {
             if (str_contains("/api/administrador/usuarios/alta/", $paths)) {
                 $requestBody = file_get_contents("php://input");
                 $data = json_decode($requestBody);
@@ -167,20 +174,12 @@ switch ($requestMethod) {
             }else{
                 solicitudError();
             }
-        }else if(obtenerRol() === "1"){
+        }else if($rol === "1"){
             if(str_contains("/api/jugador/rendirse/", $paths)){
                 $requestBody = file_get_contents("php://input");
                 $data = json_decode($requestBody);
                 if($data !== null and isset($data->idPartida) and isset($data->idJugador)) {
                     $result = databaseController::rendirsePartida($db->getConnection(), $data->idPartida, $data->idJugador);
-                }else {
-                    solicitudError();
-                }
-            }else if(str_contains("/api/jugar/", $paths)){
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
-                if($data !== null and isset($data->idPartida) and isset($data->idUsuario) and isset($data->casilla)) {
-                    $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $data->idUsuario, $data->casilla);
                 } else {
                     solicitudError();
                 }
@@ -192,7 +191,7 @@ switch ($requestMethod) {
         }
         break;
     case 'DELETE':
-        if(obtenerRol() === "0"){
+        if($rol === "0"){
             $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
       
             if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'eliminar') !== false) {
@@ -201,7 +200,7 @@ switch ($requestMethod) {
             }else{
                 solicitudError();
             }  
-        }else if(obtenerRol() === "1"){
+        }else if($rol === "1"){
 
         }else{
             solicitudError();
@@ -212,14 +211,7 @@ switch ($requestMethod) {
         break;
 }
 
-function obtenerRol(){
-    if (isset($_SESSION['rol'])) {
-        $rol = $_SESSION['rol'];
-        return $rol[7];
-    } else {
-        echo json_encode(["message" => "No se ha iniciado sesión"]);
-    }
-}
+
 
 function solicitudError(){
     // La solicitud está incompleta o mal formada

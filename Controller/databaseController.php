@@ -8,8 +8,6 @@ public static function iniciarSesion($conexion, $email, $pass, $rol){
     $rol =  login($conexion, $email, $pass);
     if ($rol !== null) {
         header("HTTP/1.1 200 OK");
-        $_SESSION['rol'] = $rol;
-        echo $rol;
         return $rol;
     } else {
         header("HTTP/1.1 401 Unauthorized");
