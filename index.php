@@ -187,17 +187,23 @@ switch ($requestMethod) {
         }
         break;
     case 'DELETE':
-        if($rol === "0"){
-            $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
-      
-            if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'eliminar') !== false) {
-                $id = end($urlArray);
-                $result = databaseController::eliminarUsuarioId($db->getConnection(), $id);
+        if ($data !== null and isset($data->email) and isset($data->password)) {
+            $rol = databaseController::iniciarSesion($db->getConnection(), $data->email, $data->password, $rol);
+        
+            if($rol === "0"){
+                $urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+        
+                if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'eliminar') !== false) {
+                    $id = end($urlArray);
+                    $result = databaseController::eliminarUsuarioId($db->getConnection(), $id);
+                }else{
+                    solicitudError();
+                }  
+            }else if($rol === "1"){
+
             }else{
                 solicitudError();
-            }  
-        }else if($rol === "1"){
-
+            }
         }else{
             solicitudError();
         }
