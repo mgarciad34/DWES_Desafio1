@@ -9,7 +9,7 @@ public static function crearTableroJuego($db, $posicionesTablero, $posicionesMin
     $tablerousuario = iniciarTablero($posicionesTablero, "t");
     $datosTableroUsuario = implode(", ", $tablerousuario);
     $datosTableroOculto = implode(", ", $tablero);
-    $result = insertarTablero($db, $id, $datosTableroOculto, $datosTableroUsuario, "false");
+    $result = insertarTablero($db, $id, $datosTableroOculto, $datosTableroUsuario, "0");
     if ($result !== null) {
         header("HTTP/1.1 200 OK");
         return $result;

@@ -288,7 +288,7 @@ function insertarTablero($conexion, $idU, $to, $tj, $finalizada) {
 }
 
 function rendirse($conexion, $idPartida, $idJugador){
-    $sql = "UPDATE partidas SET finalizada = 'true' WHERE id = ? AND idU = ?";
+    $sql = "UPDATE partidas SET finalizada = '1' WHERE id = ? AND idU = ?";
     $stmt = $conexion->prepare($sql);
 
     if (!$stmt) {
