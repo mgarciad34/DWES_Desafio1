@@ -31,18 +31,36 @@ A continuación se describen las rutas y funcionalidades disponibles en este có
 
 - `PUT /api/administrador/usuarios/alta/`: Activa un usuario (solo para administradores).
 
+  ![AltaUsuario](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/altaUsuario.png)
+
 - `PUT /api/administrador/usuarios/baja/`: Desactiva un usuario (solo para administradores).
+
+  ![BajaUsuario](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/bajaUsuario.png)
 
 - `PUT /api/administrador/usuarios/activo/`: Activa un usuario (solo para administradores).
 
+  ![ActivoUsuario](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/activoUsuario.png)
+
 - `PUT /api/administrador/usuarios/desactivo/`: Desactiva un usuario (solo para administradores).
+
+  ![DesactivoUsuario](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/desactivoUsuario.png)
 
 - `PUT /api/administrador/usuarios/cambiarcontrasena/`: Cambia la contraseña de un usuario (solo para administradores).
 
+  ![cambiarContrasena](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/cambiarContrasena.png)
+
 - `PUT /api/administrador/usuarios/modificar/`: Modifica los datos de un usuario (a implementar).
+
+  ![modificarDatos](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/modificarUsuario.png)
 
 - `PUT /api/administrador/rendirse/`: Permite a un usuario rendirse en una partida de Buscaminas.
 
+  ![rendirse](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/rendirse.png)
+
 - `PUT /api/jugar/`: Permite a un usuario jugar una casilla en una partida de Buscaminas.
 
+  ![partida](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/partida.png)
+
 - `DELETE /api/administrador/usuarios/eliminar/{id}`: Elimina un usuario por su ID (solo para administradores).
+
+  ![eliminarUsuario](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/eliminarUsuario.png)
