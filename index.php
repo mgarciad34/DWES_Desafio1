@@ -90,99 +90,99 @@ switch ($requestMethod) {
         }
             break;
     case 'PUT':
-        if ($rol === "0") {
-            if (str_contains("/api/administrador/usuarios/alta/", $paths)) {
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
-    
-                if ($data !== null and isset($data->id)) {
-                    $result = databaseController::altaUsuario($db->getConnection(), $data->id);
-    
-                } else {
-                    solicitudError();
-                }
-            }else if (str_contains("/api/administrador/usuarios/baja/", $paths)) {
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
-    
-                if ($data !== null and isset($data->id)) {
-                    $result = databaseController::bajaUsuario($db->getConnection(), $data->id);
-                } else {
-                  solicitudError();
-                }
-            }else if (str_contains("/api/administrador/usuarios/activo/", $paths)) {
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
-        
-                if ($data !== null and isset($data->id)) {
-                    $result = databaseController::activoUsuario($db->getConnection(), $data->id);
-                } else {
-                    solicitudError();
-                }
-            }else if (str_contains("/api/administrador/usuarios/desactivo/", $paths)) {
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
+        if ($data !== null and isset($data->emailadmin) and isset($data->passwordadmin)) {
+            $rol = databaseController::iniciarSesion($db->getConnection(), $data->emailadmin, $data->passwordadmin, $rol);
             
-                if ($data !== null and isset($data->id)) {
-                    $result = databaseController::desactivoUsuario($db->getConnection(), $data->id);
-                    if ($result !== null) {
-                        header("HTTP/1.1 200 OK");
-                        echo json_encode($result);
+            if ($rol[7] === "0") {
+                if (str_contains("/api/administrador/usuarios/alta/", $paths)) {
+                    if ($data !== null and isset($data->id)) {
+                        $result = databaseController::altaUsuario($db->getConnection(), $data->id);
+        
                     } else {
-                        header("HTTP/1.1 401 Unauthorized");
+                        solicitudError();
+                    }
+                }else if (str_contains("/api/administrador/usuarios/baja/", $paths)) {
+                    if ($data !== null and isset($data->id)) {
+                        $result = databaseController::bajaUsuario($db->getConnection(), $data->id);
+                    } else {
+                    solicitudError();
+                    }
+                }else if (str_contains("/api/administrador/usuarios/activo/", $paths)) {
+                    if ($data !== null and isset($data->id)) {
+                        $result = databaseController::activoUsuario($db->getConnection(), $data->id);
+                    } else {
+                        solicitudError();
+                    }
+                }else if (str_contains("/api/administrador/usuarios/desactivo/", $paths)) {
+                    if ($data !== null and isset($data->id)) {
+                        $result = databaseController::desactivoUsuario($db->getConnection(), $data->id);
+                        if ($result !== null) {
+                            header("HTTP/1.1 200 OK");
+                            echo json_encode($result);
+                        } else {
+                            header("HTTP/1.1 401 Unauthorized");
+                        }
+                    }else{
+                    header("HTTP/1.1 400 Bad Request");
+                    }
+                }else if (str_contains("/api/administrador/usuarios/cambiarcontrasena/", $paths)) {
+                     if ($data !== null and isset($data->id) and isset($data->password)) {
+                        $result = databaseController::cambiarContrasena($db->getConnection(), $data->id, $data->password);
+                    } else {
+                        solicitudError();
+                    }
+                }else if(str_contains("/api/administrador/usuarios/modificar/", $paths)){
+                    //No funciona
+                    //$urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
+                    //$requestBody = file_get_contents("php://input");
+                    //$data = json_decode($requestBody);
+                    //if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'modificar') !== false) {
+                    //    $id = end($urlArray);
+                    //    $result = databaseController::actualizarDatos($db->getConnection(), $id, $data); 
+                    //}
+                }else if(str_contains("/api/administrador/rendirse/", $paths)){
+                    $requestBody = file_get_contents("php://input");
+                    $data = json_decode($requestBody);
+                    if($data !== null and isset($data->idPartida) and isset($data->idJugador)) {
+                        $result = databaseController::rendirsePartida($db->getConnection(), $data->idPartida, $data->idJugador);
+                    } else {
+                        solicitudError();
+                    }
+                }else if(str_contains("/api/jugar/", $paths)){
+                    $requestBody = file_get_contents("php://input");
+                    $data = json_decode($requestBody);
+                    if($data !== null and isset($data->idPartida) and isset($data->idUsuario) and isset($data->casilla)) {
+                        $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $data->idUsuario, $data->casilla);
+                    } else {
+                        solicitudError();
                     }
                 }else{
-                  header("HTTP/1.1 400 Bad Request");
-                }
-            }else if (str_contains("/api/administrador/usuarios/cambiarcontrasena/", $paths)) {
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
-                if ($data !== null and isset($data->id) and isset($data->password)) {
-                    $result = databaseController::cambiarContrasena($db->getConnection(), $data->id, $data->password);
-                } else {
                     solicitudError();
                 }
-            }else if(str_contains("/api/administrador/usuarios/modificar/", $paths)){
-                //No funciona
-                //$urlArray = explode('/', parse_url($paths, PHP_URL_PATH));
-                //$requestBody = file_get_contents("php://input");
-                //$data = json_decode($requestBody);
-                //if (count($urlArray) >= 5 && strpos($urlArray[1], 'api') !== false && strpos($urlArray[2], 'administrador') !== false && strpos($urlArray[3], 'usuarios') !== false && strpos($urlArray[4], 'modificar') !== false) {
-                //    $id = end($urlArray);
-                //    $result = databaseController::actualizarDatos($db->getConnection(), $id, $data); 
-                //}
-            }else if(str_contains("/api/administrador/rendirse/", $paths)){
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
-                if($data !== null and isset($data->idPartida) and isset($data->idJugador)) {
-                    $result = databaseController::rendirsePartida($db->getConnection(), $data->idPartida, $data->idJugador);
-                } else {
-                    solicitudError();
-                }
-            }else if(str_contains("/api/jugar/", $paths)){
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
-                if($data !== null and isset($data->idPartida) and isset($data->idUsuario) and isset($data->casilla)) {
-                    $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $data->idUsuario, $data->casilla);
-                } else {
+            }else if($rol[7] === "1"){
+                if(str_contains("/api/jugador/rendirse/", $paths)){
+                    $requestBody = file_get_contents("php://input");
+                    $data = json_decode($requestBody);
+                    if($data !== null and isset($data->idPartida) and isset($data->idJugador)) {
+                        $result = databaseController::rendirsePartida($db->getConnection(), $data->idPartida, $data->idJugador);
+                    } else {
+                        solicitudError();
+                    }
+                }else if(str_contains("/api/jugar/", $paths)){
+                        $requestBody = file_get_contents("php://input");
+                        $data = json_decode($requestBody);
+                        if($data !== null and isset($data->idPartida) and isset($data->idUsuario) and isset($data->casilla)) {
+                            $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $data->idUsuario, $data->casilla);
+                        } else {
+                            solicitudError();
+                        }
+                }else{
                     solicitudError();
                 }
             }else{
                 solicitudError();
             }
-        }else if($rol === "1"){
-            if(str_contains("/api/jugador/rendirse/", $paths)){
-                $requestBody = file_get_contents("php://input");
-                $data = json_decode($requestBody);
-                if($data !== null and isset($data->idPartida) and isset($data->idJugador)) {
-                    $result = databaseController::rendirsePartida($db->getConnection(), $data->idPartida, $data->idJugador);
-                } else {
-                    solicitudError();
-                }
-            }else{
-                solicitudError();
-            }
-        }else{
+        }else {
             solicitudError();
         }
         break;
