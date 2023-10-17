@@ -29,6 +29,33 @@ function login($conexion, $email, $pass) {
     }
 }
 
+function obtenerId($conexion, $email, $pass) {
+    $consulta = "SELECT id FROM personas WHERE EMAIL = ? AND PASSWORD = ?";
+    
+    if ($stmt = $conexion->prepare($consulta)) {
+        $password = md5($pass);
+        $stmt->bind_param("ss", $email, $password);
+
+        if ($stmt->execute()) {
+            $resultados = $stmt->get_result();
+
+            if ($resultados->num_rows === 1) {
+                $array = mysqli_fetch_assoc($resultados);
+                $stmt->close();
+                return json_encode($array); // Devuelve un objeto JSON en caso de éxito
+            } else {
+                $stmt->close();
+                return json_encode(["error" => "Credenciales incorrectas"]); // Devuelve un objeto JSON en caso de credenciales incorrectas
+            }
+        } else {
+            $stmt->close();
+            return json_encode(["error" => "Error en la consulta SQL"]); // Devuelve un objeto JSON en caso de error en la consulta SQL
+        }
+    } else {
+        return json_encode(["error" => "Error en la preparación de la consulta SQL"]); // Devuelve un objeto JSON en caso de error en la preparación de la consulta SQL
+    }
+}
+
 /*echo json_encode(login($db->getConnection(), 0, "administrador"));
 echo json_encode(insertarDatos($db->getConnection(), 1, "pswd001", 1, "nombre1", "usuario1@email.com", 0, 0, 0, 0));*/
 

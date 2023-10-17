@@ -14,6 +14,16 @@ public static function iniciarSesion($conexion, $email, $pass, $rol){
     }
 }
 
+public static function idSesion($conexion, $email, $pass){
+    $id =  obtenerId($conexion, $email, $pass);
+    if ($id !== null) {
+        header("HTTP/1.1 200 OK");
+        return $id;
+    } else {
+        header("HTTP/1.1 401 Unauthorized");
+    }
+}
+
 public static function anadirUsuario($conexion, Personas $personas){
     $result = insertarDatos($conexion, $personas->getId(), $personas->getPassword(), $personas->getRol(), $personas->getNombre(), $personas->getEmail(), $personas->getAlta(), $personas->getActivo(), 0, 0);
     if ($result !== null) {

@@ -151,8 +151,9 @@ switch ($requestMethod) {
                 }else if(str_contains("/api/jugar/", $paths)){
                     $requestBody = file_get_contents("php://input");
                     $data = json_decode($requestBody);
-                    if($data !== null and isset($data->idPartida) and isset($data->idUsuario) and isset($data->casilla)) {
-                        $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $data->idUsuario, $data->casilla);
+                    if($data !== null and isset($data->idPartida) and isset($data->casilla)) {
+                        $id = databaseController::idSesion($db->getConnection(), $data->emailadmin, $data->passwordadmin);
+                        $result = databaseController::jugarPartida($db->getConnection(), $data->idPartida, $id, $data->casilla);
                     } else {
                         solicitudError();
                     }
