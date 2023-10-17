@@ -15,13 +15,19 @@ A continuación se describen las rutas y funcionalidades disponibles en este có
 
 - `GET /api/usuario/ranking/`: Obtiene el ranking de partidas ganadas por usuarios (disponible para administradores y usuarios).
 
-- `GET /api/usuario/generar/tablero/{ancho}/{alto}/{minas}`: Genera un tablero de juego Buscaminas con las dimensiones especificadas.
+  ![RankingUsuarios](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/Ranking.png)
 
-- `POST /api/login`: Inicia sesión como administrador o usuario.
+- `GET /api/usuario/generar/tablero/{id}/{posiciones}/{minas}`: Genera un tablero de juego Buscaminas con las dimensiones especificadas.
 
-  ![LoginAdministrador](https://github.com/mgarciad34/DWES_Desafio1/blob/administrador/images/LoginAdministrador.png)
+  ![TableroPersonalizado](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/tableroPersonalizado.png)
+
+- `GET /api/usuario/generar/tablero/{id}/{posiciones}/{minas}`: Genera un tablero de juego Buscaminas con las dimensiones definidas.
+
+  ![TableroEstandar](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/tableroEstandar.png)
 
 - `POST /api/administrador/usuarios/insertar/`: Inserta un nuevo usuario (solo para administradores).
+
+  ![InsertarUsuario](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/insertarUsuario.png)
 
 - `PUT /api/administrador/usuarios/alta/`: Activa un usuario (solo para administradores).
 
