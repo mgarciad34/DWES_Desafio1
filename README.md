@@ -9,9 +9,9 @@ A continuación se describen las rutas y funcionalidades disponibles en este có
 
 - `GET /api/administrador/usuarios/listar/`: Lista todos los usuarios (solo para administradores).
 
-  ![ListarUsuarios](https://github.com/mgarciad34/DWES_Desafio1/blob/administrador/images/ListarUsuarios.png)
+  ![ListarUsuarios](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/ListarUsuarios.png)
 
-  ![ListarUsuariosID](https://github.com/mgarciad34/DWES_Desafio1/blob/administrador/images/ListarUsuariosID.png)
+  ![ListarUsuariosID](https://github.com/mgarciad34/DWES_Desafio1/blob/main/images/ListarUsuariosID.png)
 
 - `GET /api/usuario/ranking/`: Obtiene el ranking de partidas ganadas por usuarios (disponible para administradores y usuarios).
 
